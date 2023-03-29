@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
+        controls.Player.Inventory.performed += ctx => HandleInventory();
     }
 
     void Update()
@@ -62,6 +63,11 @@ public class PlayerController : MonoBehaviour
         //Gravity logic
         Vector3 gravity = Physics.gravity.y * 5f * Vector3.up;
         rigid.AddForce(gravity, ForceMode.Acceleration);
+    }
+
+    private void HandleInventory()
+    {
+        InventoryManager.Instance.ListItems();
     }
 
     //Check if player is on floor and get the surface normal to normalize movement in all angles
