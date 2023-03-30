@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class HeadBobbing : MonoBehaviour
 {
-    public bool isActive;
+    public bool isActive; //Optional for the player
 
-    [SerializeField, Range(0, 0.1f)] private float amplitude = 0.015f;
+    [SerializeField, Range(0, 0.1f)] private float amplitude = 0.015f; 
     [SerializeField, Range(0, 30)] private float frequency = 10.0f;
 
-    private float toggleSpeed = 3f;
+    private float toggleSpeed = 3f; //Min speed of the player for headbobbing
     private Vector3 startPos;
-    [SerializeField] private Transform cam;
-    [SerializeField] private Transform cameraHolder;
+    [SerializeField] private Transform cam; //Make the headbobbing movement
+    [SerializeField] private Transform cameraHolder; //Make the actual camera look straight
 
-    [SerializeField] private float landingTriggerHeight;
+    [SerializeField] private float landingTriggerHeight; //Min height to trigger fall animation
     private bool canLand = true;
 
     void Start()
@@ -42,6 +42,7 @@ public class HeadBobbing : MonoBehaviour
         }
     }
 
+    //Check if the head bobbing need to be applied based on player velocity
     private void CheckMotion()
     {
         float speed = PlayerController.Instance.rigid.velocity.magnitude;
@@ -50,6 +51,7 @@ public class HeadBobbing : MonoBehaviour
         PlayMotion(FootStepMotion());
     }
 
+    //Animation math
     private Vector3 FootStepMotion()
     {
         Vector3 pos = Vector3.zero;
@@ -69,6 +71,7 @@ public class HeadBobbing : MonoBehaviour
         cam.localPosition += motion;
     }
 
+    //Make the camera look in a straight line 
     private Vector3 FocusTarget()
     {
         Vector3 pos = new Vector3(transform.position.x, transform.position.y + cameraHolder.localPosition.y, transform.position.z);

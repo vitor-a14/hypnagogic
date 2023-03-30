@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance;
+    public static PlayerController Instance; //Acess from other scripts
 
     //Player controls config's
     public bool canMove = true;
@@ -15,14 +15,13 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool onGround;
 
     //Movement setup
-    [HideInInspector]
-    public Inputs controls;
+    [HideInInspector] public Inputs controls; //Only this input is necessary, acess him from other scripts
+    [HideInInspector] public Rigidbody rigid;
+    [HideInInspector] public Vector3 processedDirection;
     Vector2 input;
     Transform cam;
-    [HideInInspector] public Rigidbody rigid;
     Vector3 direction;
     Vector3 surfaceNormal;
-    [HideInInspector] public Vector3 processedDirection;
 
     void Start()
     {
@@ -32,6 +31,7 @@ public class PlayerController : MonoBehaviour
         controls = new Inputs();
         controls.Enable();
 
+        //Setup input callbacks
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
         controls.Player.Inventory.performed += ctx => HandleInventory();
@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
         Vector3 forward = Vector3.Cross(transform.up, -cam.right).normalized;
         Vector3 right = Vector3.Cross(transform.up, cam.forward).normalized;
 
+        //Input treatment
         input = Vector2.ClampMagnitude(input, 1f);
         direction = (forward * input.y + right * input.x) * velocity;
     }
