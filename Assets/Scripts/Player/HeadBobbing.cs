@@ -31,9 +31,7 @@ public class HeadBobbing : MonoBehaviour
         cam.LookAt(FocusTarget());
 
         if(!Physics.Raycast(transform.position, -transform.up, landingTriggerHeight))
-        {
             canLand = true;
-        }
 
         if(PlayerController.Instance.onGround && canLand)
         {

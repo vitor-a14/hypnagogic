@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
         controls.Player.Inventory.performed += ctx => HandleInventory();
+
+        UseMouse(false);
     }
 
     void Update()
@@ -90,5 +92,15 @@ public class PlayerController : MonoBehaviour
         {
             onGround = false;
         }
+    }
+
+    public void UseMouse(bool state) 
+    {
+        Cursor.visible = state;
+
+        if(state)
+            Cursor.lockState = CursorLockMode.None;
+        else
+            Cursor.lockState = CursorLockMode.Locked;
     }
 }

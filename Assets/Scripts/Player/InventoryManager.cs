@@ -31,15 +31,18 @@ public class InventoryManager : MonoBehaviour
     //Also update if the player can move or not
     public void ListItems() 
     {
-        inventoryComponent.SetActive(inventoryComponent.activeSelf ? false : true);
-        PlayerController.Instance.canMove = !inventoryComponent.activeSelf;
+        if(!PlayerController.Instance.onGround) return;
 
-        if(!inventoryComponent.activeSelf) return;
+        inventoryComponent.SetActive(inventoryComponent.activeSelf ? false : true);
+
+        bool inventoryIsActive = inventoryComponent.activeSelf;
+        PlayerController.Instance.canMove = !inventoryIsActive;
+        PlayerController.Instance.UseMouse(inventoryIsActive);
+
+        if(!inventoryIsActive) return;
 
         foreach (Transform item in contentGrid)
-        {
             Destroy(item.gameObject);
-        }
 
         foreach (var item in items)
         {
