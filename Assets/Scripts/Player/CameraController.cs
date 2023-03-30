@@ -15,21 +15,19 @@ public class CameraController : MonoBehaviour
     //Movement setup
     Vector2 input;
     Vector3 camRotation;
-    Inputs controls;
     Transform entityOnReach; // get the interactable entity that the player is aiming
 
     void Start()
     {
-        controls = new Inputs();
-        controls.Enable();
-
-        controls.Player.Camera.performed += ctx => input = ctx.ReadValue<Vector2>();
-        controls.Player.Camera.canceled += ctx => input = Vector2.zero;
-        controls.Player.Interact.performed += ctx => InteractWithEnviroment();
+        PlayerController.Instance.controls.Player.Camera.performed += ctx => input = ctx.ReadValue<Vector2>();
+        PlayerController.Instance.controls.Player.Camera.canceled += ctx => input = Vector2.zero;
+        PlayerController.Instance.controls.Player.Interact.performed += ctx => InteractWithEnviroment();
     }
 
     void Update()
     {
+        if(!PlayerController.Instance.canMove) return;
+
         camRotation.y += input.x * sensivity * Time.deltaTime;
         camRotation.x -= input.y * sensivity * Time.deltaTime;
         camRotation.x = Mathf.Clamp(camRotation.x, -maxAngle, maxAngle); 

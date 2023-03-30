@@ -11,7 +11,6 @@ public class HeadBobbing : MonoBehaviour
 
     private float toggleSpeed = 3f;
     private Vector3 startPos;
-    private PlayerController controller;
     [SerializeField] private Transform cam;
     [SerializeField] private Transform cameraHolder;
 
@@ -20,7 +19,6 @@ public class HeadBobbing : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<PlayerController>();
         startPos = cam.localPosition;
     }
 
@@ -37,7 +35,7 @@ public class HeadBobbing : MonoBehaviour
             canLand = true;
         }
 
-        if(controller.onGround && canLand)
+        if(PlayerController.Instance.onGround && canLand)
         {
             cam.localPosition = Vector3.up * -0.3f;
             canLand = false;
@@ -46,8 +44,8 @@ public class HeadBobbing : MonoBehaviour
 
     private void CheckMotion()
     {
-        float speed = controller.rigid.velocity.magnitude;
-        if(speed < toggleSpeed || !controller.onGround) return;
+        float speed = PlayerController.Instance.rigid.velocity.magnitude;
+        if(speed < toggleSpeed || !PlayerController.Instance.onGround) return;
 
         PlayMotion(FootStepMotion());
     }

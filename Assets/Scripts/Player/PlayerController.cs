@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     //Player controls config's
+    public bool canMove = true;
     public float velocity;
     public float floorFriction;
     public LayerMask walkableLayers;
@@ -12,7 +15,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool onGround;
 
     //Movement setup
-    Inputs controls;
+    [HideInInspector]
+    public Inputs controls;
     Vector2 input;
     Transform cam;
     [HideInInspector] public Rigidbody rigid;
@@ -22,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Instance = this;
         rigid = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
         controls = new Inputs();
@@ -58,7 +63,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //Movement apply
-        rigid.velocity = new Vector3(processedDirection.x, rigid.velocity.y, processedDirection.z);
+        if(canMove) 
+            rigid.velocity = new Vector3(processedDirection.x, rigid.velocity.y, processedDirection.z);
 
         //Gravity logic
         Vector3 gravity = Physics.gravity.y * 5f * Vector3.up;

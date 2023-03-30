@@ -31,6 +31,7 @@ public class InventoryManager : MonoBehaviour
     public void ListItems() 
     {
         inventoryComponent.SetActive(inventoryComponent.activeSelf ? false : true);
+        PlayerController.Instance.canMove = !inventoryComponent.activeSelf;
 
         if(!inventoryComponent.activeSelf) return;
 
