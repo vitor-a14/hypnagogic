@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if(!PlayerController.Instance.canMove) return;
+        if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) return;
 
         camRotation.y += input.x * sensivity * Time.deltaTime;
         camRotation.x -= input.y * sensivity * Time.deltaTime;

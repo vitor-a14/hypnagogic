@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance; //Acess from other scripts
 
     //Player controls config's
-    public bool canMove = true;
     public float velocity;
     public float floorFriction;
     public LayerMask walkableLayers;
@@ -23,13 +22,17 @@ public class PlayerController : MonoBehaviour
     Vector3 direction;
     Vector3 surfaceNormal;
 
-    void Start()
+    void Awake()
     {
         Instance = this;
-        rigid = GetComponent<Rigidbody>();
-        cam = Camera.main.transform;
         controls = new Inputs();
         controls.Enable();
+    }
+
+    private void Start() 
+    {
+        rigid = GetComponent<Rigidbody>();
+        cam = Camera.main.transform;
 
         //Setup input callbacks
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
@@ -66,7 +69,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Movement apply
-        if(canMove) 
+        if(!DialogueManager.Instance.dialogueIsPlaying && !InventoryManager.Instance.onInventory) 
             rigid.velocity = new Vector3(processedDirection.x, rigid.velocity.y, processedDirection.z);
 
         //Gravity logic

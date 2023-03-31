@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     public Transform contentGrid; //Grid where the items will be displayed
     public GameObject itemWindow; //Item window
     public GameObject inventoryComponent; //All the inventory HUD to show or hide
+    public bool onInventory = false;
     
     void Start()
     {
@@ -32,16 +33,15 @@ public class InventoryManager : MonoBehaviour
     //Also update if the player can move or not
     public void ListItems() 
     {
-        if(!PlayerController.Instance.onGround) return;
+        if(!PlayerController.Instance.onGround || DialogueManager.Instance.dialogueIsPlaying) return;
+
+        onInventory = !onInventory;
 
         itemWindow.SetActive(false);
-        inventoryComponent.SetActive(inventoryComponent.activeSelf ? false : true);
+        inventoryComponent.SetActive(onInventory);
+        PlayerController.Instance.UseMouse(onInventory);
 
-        bool inventoryIsActive = inventoryComponent.activeSelf;
-        PlayerController.Instance.canMove = !inventoryIsActive;
-        PlayerController.Instance.UseMouse(inventoryIsActive);
-
-        if(!inventoryIsActive) return;
+        if(!onInventory) return;
 
         foreach (Transform item in contentGrid)
             Destroy(item.gameObject);
@@ -60,7 +60,7 @@ public class InventoryManager : MonoBehaviour
 
     public void ShowItem(Item item)
     {
-        if(!inventoryComponent.activeSelf) return; //Only show item if inventory is open
+        if(!onInventory) return; //Only show item if inventory is open
 
         itemWindow.SetActive(true); //Show window
 
