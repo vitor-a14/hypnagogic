@@ -75,4 +75,15 @@ public class InventoryManager : MonoBehaviour
         //Spawn the content
         Instantiate(item.itemDescriptionWindow, itemWindowContent);
     }
+
+    public bool SearchForItem(Item targetItem)
+    {
+        foreach(Item item in items)
+        {
+            if(item == targetItem)
+                return true;
+        }
+
+        return false;
+    }
 }
