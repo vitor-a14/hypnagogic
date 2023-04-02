@@ -10,6 +10,10 @@ public class InteractableDoor : Interactable
     private Quaternion openDoorRotation, closedDoorRotation;
     private BoxCollider doorCollider;
 
+    //audio
+    [SerializeField] private AudioClip doorOpenAudio, doorCloseAudio, doorLockedAudio;
+    [SerializeField] private AudioSource audioSource;
+
     private void Start() {
         doorCollider = GetComponent<BoxCollider>();
         openDoorRotation = transform.rotation * Quaternion.Euler(0f, -90f, 0f);
@@ -28,6 +32,8 @@ public class InteractableDoor : Interactable
                 locked = false;
                 ChangeDoorState();
             }
+            else
+                AudioManager.Instance.PlayOnAudioSorce(doorLockedAudio, audioSource, AudioManager.AudioType.SFX, 1);
         }
         else
             ChangeDoorState();
@@ -42,6 +48,11 @@ public class InteractableDoor : Interactable
     {   
         openDoor = !openDoor;
         doorCollider.isTrigger = openDoor;   
+
+        if(openDoor)
+            AudioManager.Instance.PlayOnAudioSorce(doorOpenAudio, audioSource, AudioManager.AudioType.SFX, 1);
+        else
+            AudioManager.Instance.PlayOnAudioSorce(doorCloseAudio, audioSource, AudioManager.AudioType.SFX, 1);
     }
 
     private void UpdateDoor()

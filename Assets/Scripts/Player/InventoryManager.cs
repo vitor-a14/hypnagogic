@@ -13,6 +13,8 @@ public class InventoryManager : MonoBehaviour
     public GameObject itemWindow; //Item window
     public GameObject inventoryComponent; //All the inventory HUD to show or hide
     public bool onInventory = false;
+
+    [SerializeField] private AudioClip addItemAudio, removeItemAudio;
     
     private void Awake()
     {
@@ -28,12 +30,14 @@ public class InventoryManager : MonoBehaviour
     {
         items.Add(item);
         HUDManager.Instance.TriggerPopUp(item.itemName + " added");
+        AudioManager.Instance.PlayOneShot2D(addItemAudio, gameObject, AudioManager.AudioType.SFX, 1);
     }
 
     public void Remove(Item item) 
     {
         items.Remove(item);
         HUDManager.Instance.TriggerPopUp(item.itemName + " removed");
+        AudioManager.Instance.PlayOneShot2D(removeItemAudio, gameObject, AudioManager.AudioType.SFX, 1);
     }
 
     //Open or close the inventory and update the HUD with the itens
