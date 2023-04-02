@@ -33,6 +33,7 @@ public class HeadBobbing : MonoBehaviour
         if(!Physics.Raycast(transform.position, -transform.up, landingTriggerHeight))
             canLand = true;
 
+        //Apply landing animation
         if(PlayerController.Instance.onGround && canLand)
         {
             cam.localPosition = Vector3.up * -0.3f;

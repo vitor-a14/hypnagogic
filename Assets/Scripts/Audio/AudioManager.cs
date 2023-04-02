@@ -27,11 +27,59 @@ public class AudioManager : MonoBehaviour
         Instance = this;
     }
 
-    public void PlayOneShot(AudioClip audio, Vector3 position, AudioType type, float multiplier)
+    //Create a 3D audio instance in a gameobject
+    public void PlayOneShot3D(AudioClip audio, GameObject entity, AudioType type, float multiplier)
     {
-        GameObject instance = Instantiate(audioInstance, position, Quaternion.identity);
-        AudioSource audioSource = instance.GetComponent<AudioSource>();
+        AudioSource audioSource = entity.AddComponent<AudioSource>();
 
+        switch(type)
+        {
+        case AudioType.SFX:
+            audioSource.volume = SFXVolume;
+            break;
+        case AudioType.Ambience:
+            audioSource.volume = ambienceVolume;
+            break;
+        case AudioType.Music:
+            audioSource.volume = musicVolume;
+            break;
+        }
+
+        audioSource.spatialBlend = 1;
+        audioSource.volume *= multiplier;
+        audioSource.PlayOneShot(audio);
+        
+        Destroy(audioSource, audio.length);
+    }
+
+    //Create a 2D audio instance in a gameobject
+    public void PlayOneShot2D(AudioClip audio, GameObject entity, AudioType type, float multiplier)
+    {
+        AudioSource audioSource = entity.AddComponent<AudioSource>();
+
+        switch(type)
+        {
+        case AudioType.SFX:
+            audioSource.volume = SFXVolume;
+            break;
+        case AudioType.Ambience:
+            audioSource.volume = ambienceVolume;
+            break;
+        case AudioType.Music:
+            audioSource.volume = musicVolume;
+            break;
+        }
+
+        audioSource.spatialBlend = 0;
+        audioSource.volume *= multiplier;
+        audioSource.PlayOneShot(audio);
+        
+        Destroy(audioSource, audio.length);
+    }
+
+    //Use a already existent audio source to play a audio
+    public void PlayOnAudioSorce(AudioClip audio, AudioSource audioSource, AudioType type, float multiplier)
+    {
         switch(type)
         {
         case AudioType.SFX:
@@ -47,6 +95,5 @@ public class AudioManager : MonoBehaviour
 
         audioSource.volume *= multiplier;
         audioSource.PlayOneShot(audio);
-        Destroy(instance, audio.length);
     }
 }

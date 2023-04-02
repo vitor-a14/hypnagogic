@@ -8,8 +8,11 @@ public class PlayerAudioManager : MonoBehaviour
     public float footstepFrequency;
     public AudioClip[] footsteps;
 
+    AudioSource audioSorce;
+
     void Start()
     {
+        audioSorce = GetComponent<AudioSource>();
         StartCoroutine(FootStepLogic());
     }
 
@@ -19,10 +22,19 @@ public class PlayerAudioManager : MonoBehaviour
         {
             if(PlayerController.Instance.input.x != 0 || PlayerController.Instance.input.y != 0 && PlayerController.Instance.onGround)
             {
-                AudioManager.Instance.PlayOneShot(footsteps[Random.Range(0, footsteps.Length)], transform.position, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
+                PlayFootStep();
                 yield return new WaitForSeconds(footstepFrequency);     
             }
-            else yield return null;
+            else 
+            {
+                audioSorce.Stop();
+                yield return null;
+            }
         }
+    }
+
+    public void PlayFootStep()
+    {
+        AudioManager.Instance.PlayOnAudioSorce(footsteps[Random.Range(0, footsteps.Length)], audioSorce, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
     }
 }
