@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Ink.Runtime;
-using Ink.UnityIntegration;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -18,8 +17,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject[] choices;
     private TMP_Text[] choicesText;
 
-    [Header("Globals Ink File")]
-    [SerializeField] private InkFile globalsInkFile;
+    [Header("Load Globals JSON")]
+    [SerializeField] private TextAsset loadGlobalsJson;
 
     private Story currentStory;
     public bool dialogueIsPlaying;
@@ -33,7 +32,7 @@ public class DialogueManager : MonoBehaviour
         else
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
 
-        dialogueVariables = new DialogueVariables(globalsInkFile.filePath);
+        dialogueVariables = new DialogueVariables(loadGlobalsJson);
     }
 
     private void Start()
