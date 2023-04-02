@@ -11,7 +11,6 @@ public class CameraController : MonoBehaviour
     [Header("Interaction System")]
     public float interactionDistance;
     public LayerMask interactableLayer;
-    public GameObject interactionIcon; //A HUD element that output for the player if a interactable is in reach
 
     //Movement setup
     Vector2 input;
@@ -29,7 +28,7 @@ public class CameraController : MonoBehaviour
     {
         if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) 
         {
-            interactionIcon.SetActive(false);
+            HUDManager.Instance.ChangeInteractionIcon(false);
             return;
         }
 
@@ -45,11 +44,11 @@ public class CameraController : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, interactionDistance, interactableLayer)) 
         {
-            interactionIcon.SetActive(true);
+            HUDManager.Instance.ChangeInteractionIcon(true);
             return hit.transform;
         }
 
-        interactionIcon.SetActive(false);
+        HUDManager.Instance.ChangeInteractionIcon(false);
         return null;
     }
 
