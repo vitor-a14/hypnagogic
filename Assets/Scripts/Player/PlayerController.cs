@@ -110,9 +110,13 @@ public class PlayerController : MonoBehaviour
         //Movement apply
         if(!DialogueManager.Instance.dialogueIsPlaying && !InventoryManager.Instance.onInventory) 
         {
-            rigid.velocity = new Vector3(processedDirection.x, rigid.velocity.y, processedDirection.z);
             if(isRunning) 
-                rigid.velocity *= runMultiplier;
+            {
+                processedDirection.x *= runMultiplier;
+                processedDirection.z *= runMultiplier;
+            }
+
+            rigid.velocity = new Vector3(processedDirection.x, rigid.velocity.y, processedDirection.z);
         }
 
         //Gravity logic

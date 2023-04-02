@@ -2668,7 +2668,7 @@ MonoBehaviour:
   walkableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  groundDistanceCheck: 1.35
+  groundDistanceCheck: 1.4
   isRunning: 0
   onGround: 0
   runMultiplier: 1.6
