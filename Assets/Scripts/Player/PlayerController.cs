@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public float staminaRecovery;
     [HideInInspector] public bool aboveToggleSpeed;
     private float currentStamina, staminarRecoveryTimer;
-    private float toggleSpeed = 3f;
+    private float toggleSpeed = 1.5f;
 
     //Movement setup
     [HideInInspector] public Inputs controls; //Only this input is necessary, acess him from other scripts

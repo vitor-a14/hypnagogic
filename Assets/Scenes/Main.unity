@@ -2668,7 +2668,7 @@ MonoBehaviour:
   walkableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  groundDistanceCheck: 1.4
+  groundDistanceCheck: 1.35
   isRunning: 0
   onGround: 0
   runMultiplier: 1.6
@@ -2691,7 +2691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
-  amplitude: 0.0005
+  amplitude: 0.000453
   frequency: 15
   cam: {fileID: 963194228}
   cameraHolder: {fileID: 1952741166}

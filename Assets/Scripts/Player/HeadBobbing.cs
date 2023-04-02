@@ -6,10 +6,9 @@ public class HeadBobbing : MonoBehaviour
 {
     public bool isActive; //Optional for the player
 
-    [SerializeField, Range(0, 0.1f)] private float amplitude = 0.015f; 
+    [SerializeField, Range(0, 0.001f)] private float amplitude = 0.015f; 
     [SerializeField, Range(0, 30)] private float frequency = 10.0f;
 
-    private float toggleSpeed = 3f; //Min speed of the player for headbobbing
     private Vector3 startPos;
     [SerializeField] private Transform cam; //Make the headbobbing movement
     [SerializeField] private Transform cameraHolder; //Make the actual camera look straight
