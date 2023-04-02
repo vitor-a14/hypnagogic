@@ -2674,6 +2674,7 @@ MonoBehaviour:
   runMultiplier: 1.6
   stamina: 10
   staminaRecovery: 3
+  aboveToggleSpeed: 0
   rigid: {fileID: 0}
   processedDirection: {x: 0, y: 0, z: 0}
   input: {x: 0, y: 0}
@@ -2746,7 +2747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357f97ceed93b0249b04c8203d6ccf6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepVolumeMultiplier: 0.4
+  footstepVolumeMultiplier: 0.3
   footstepFrequency: 0.5
   footsteps:
   - {fileID: 8300000, guid: c594a21c132a5e848a3085b0dae175de, type: 3}

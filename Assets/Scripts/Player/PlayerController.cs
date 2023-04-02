@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
         controls.Player.Run.performed += ctx => TriggerRun();
-        controls.Player.Run.canceled += ctx => isRunning = false;
 
         UseMouse(false);
     }
@@ -68,6 +67,9 @@ public class PlayerController : MonoBehaviour
         direction = (forward * input.y + right * input.x) * velocity;
 
         aboveToggleSpeed = rigid.velocity.magnitude > toggleSpeed; //Check if the player is not sticked in a wall
+
+        if(!aboveToggleSpeed)
+            isRunning = false;
     }
 
     private void StaminaManagement()
