@@ -1,8 +1,13 @@
-Hello, traveler...
--> main
+INCLUDE Globals.ink
+
+{ knowNPC == false : -> main | ->already_know }
 
 === main ===
 What do you seek in this empty lands?
+    * [What is your name?]
+    Alyzar, nice to meet you, stranger. #speaker:Alyzar
+    -> main
+    
     * [I seek anwswers]
     And you shall find. Follow north until you see a blue flame. Don't stop to seek it until a ghostly woman's voice talk in your ears.
     With that, you maybe find the anwswers...
@@ -30,4 +35,20 @@ What do you seek in this empty lands?
     * ->
     Seems like we don't have anything more to say...
     So, this is a good bye.
+    ~ knowNPC = true
 -> END
+
+=== already_know ===
+We already talked about what was needed. #speaker:Alyzar
+-> END
+
+
+
+
+
+
+
+
+
+
+

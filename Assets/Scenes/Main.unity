@@ -2864,12 +2864,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 1021298991}
   dialogueText: {fileID: 10229731}
+  npcName: {fileID: 561016077}
   choices:
   - {fileID: 980493981}
   - {fileID: 742962037}
   - {fileID: 2079894679}
   - {fileID: 1873775473}
   - {fileID: 1131360265}
+  globalsInkFile:
+    compileAutomatically: 0
+    inkAsset: {fileID: 102900000, guid: 6e0eaa24ae7af1c48bb5eedb2918e4fb, type: 3}
+    jsonAssetDirectory: {fileID: 0}
+    jsonAsset: {fileID: 0}
+    unhandledCompileErrors: []
+    errors: []
+    warnings: []
+    todos: []
+    parents: []
+    masterInkAssets: []
+    masterInkAsset: {fileID: 0}
+    includePaths: []
+    includes: []
   dialogueIsPlaying: 0
 --- !u!114 &1024518875
 MonoBehaviour:

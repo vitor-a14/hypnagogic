@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Ink.Runtime;
+using Ink.UnityIntegration;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -17,8 +18,13 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject[] choices;
     private TMP_Text[] choicesText;
 
+    [Header("Globals Ink File")]
+    [SerializeField] private InkFile globalsInkFile;
+
     private Story currentStory;
     public bool dialogueIsPlaying;
+
+    private DialogueVariables dialogueVariables;
 
     private void Awake()
     {
@@ -26,6 +32,8 @@ public class DialogueManager : MonoBehaviour
             Instance = this;
         else
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
+
+        dialogueVariables = new DialogueVariables(globalsInkFile.filePath);
     }
 
     private void Start()
@@ -34,7 +42,7 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
 
         PlayerController.Instance.controls.Player.Dialogue.performed += ctx => ContinueDialogue();
-
+ 
         choicesText = new TMP_Text[choices.Length];
         int index = 0;
         foreach(GameObject choice in choices)
@@ -51,13 +59,11 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true); 
 
-        if(currentStory.canContinue) //Check if there is more dialogue to play
-        {
-            dialogueText.text = currentStory.currentText;
-            DisplayChoices();
-        }
-        else
-            EndDialogue();
+        dialogueVariables.StartListening(currentStory);
+
+        dialogueText.text = currentStory.currentText;
+        DisplayChoices();
+        HandleTags(currentStory.currentTags);
     }
 
     public void ContinueDialogue() 
@@ -73,14 +79,37 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
     }
 
+    private void HandleTags(List<string> currentTags)
+    {
+        foreach(string tag in currentTags)
+        {
+            string[] splitTag = tag.Split(":");
+            if(splitTag.Length != 2)
+                Debug.LogError("Tag could not be appropriately parsed: " + tag);
+
+            string tagKey = splitTag[0].Trim();
+            string tagValue = splitTag[1].Trim();
+
+            //if more than one tag exists, put in a switch loop below, instead of a if
+            if(tagKey == "speaker")
+            {
+                npcName.text = tagValue;
+            }
+            else
+                Debug.Log("Tag came in but is not currently being handled: " + tag);
+        }
+    }
+    
     private IEnumerator DisplayChoicesCoroutine()
     {
         yield return new WaitForEndOfFrame();
         DisplayChoices();
+        HandleTags(currentStory.currentTags);
     }
 
     public void EndDialogue()
     {
+        dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         PlayerController.Instance.UseMouse(false);
@@ -114,5 +143,15 @@ public class DialogueManager : MonoBehaviour
         // Go to the remaining choices and disable
         for(int i = index; i < choices.Length; i++)
             choices[i].gameObject.SetActive(false);
+    }
+
+    public Ink.Runtime.Object GetVariableState(string variableName)
+    {
+        Ink.Runtime.Object variableValue = null;
+        dialogueVariables.variables.TryGetValue(variableName, out variableValue);
+        if(variableValue == null)
+            Debug.LogWarning("Ink variable was found to be null: " + variableName);
+
+        return variableValue;
     }
 }
