@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    public static AudioManager Instance { get; private set; }
 
     public enum AudioType
     {
@@ -22,9 +22,12 @@ public class AudioManager : MonoBehaviour
     [Header("Others")]
     [SerializeField] private GameObject audioInstance;
 
-    void Awake()
+    private void Awake()
     {
-        Instance = this;
+        if(Instance == null)
+            Instance = this;
+        else
+            Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
     }
 
     //Create a 3D audio instance in a gameobject

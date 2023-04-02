@@ -6,7 +6,7 @@ using Ink.Runtime;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance;
+    public static DialogueManager Instance { get; private set; }
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
@@ -19,10 +19,17 @@ public class DialogueManager : MonoBehaviour
     private Story currentStory;
     public bool dialogueIsPlaying;
 
+    private void Awake()
+    {
+        if(Instance == null)
+            Instance = this;
+        else
+            Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
+    }
+
     private void Start()
     {
         dialogueIsPlaying = false;
-        Instance = this;
         dialoguePanel.SetActive(false);
 
         PlayerController.Instance.controls.Player.Dialogue.performed += ctx => ContinueDialogue();

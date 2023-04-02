@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager Instance; //Acess from other scripts
+    public static InventoryManager Instance { get; private set; }
     public List<Item> items = new List<Item>();
     public GameObject inventoryItem; //Item HUD instance
     public Transform contentGrid; //Grid where the items will be displayed
@@ -14,9 +14,14 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventoryComponent; //All the inventory HUD to show or hide
     public bool onInventory = false;
     
-    void Start()
+    private void Awake()
     {
-        Instance = this;
+        if(Instance == null)
+            Instance = this;
+        else
+            Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
+
+        PlayerController.Instance.controls.Player.Inventory.performed += ctx => ListItems();
     }
 
     public void Add(Item item) 
@@ -60,6 +65,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    //Open a window in the inventory to show the item description
     public void ShowItem(Item item)
     {
         if(!onInventory) return; //Only show item if inventory is open

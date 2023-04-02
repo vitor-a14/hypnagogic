@@ -11,13 +11,13 @@ public class PlayerAudioManager : MonoBehaviour
     float toggleSpeed = 3f;
     AudioSource audioSorce;
 
-    void Start()
+    private void Start()
     {
         audioSorce = GetComponent<AudioSource>();
         StartCoroutine(FootStepLogic());
     }
 
-    IEnumerator FootStepLogic()
+    private IEnumerator FootStepLogic()
     {   
         while(true)
         {

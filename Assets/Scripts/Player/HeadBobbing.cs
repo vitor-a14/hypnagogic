@@ -17,12 +17,12 @@ public class HeadBobbing : MonoBehaviour
     [SerializeField] private float landingTriggerHeight; //Min height to trigger fall animation
     private bool canLand = true;
 
-    void Start()
+    private void Start()
     {
         startPos = cam.localPosition;
     }
 
-    void Update()
+    private void Update()
     {
         if(!isActive) return;
 

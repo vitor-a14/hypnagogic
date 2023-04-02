@@ -13,18 +13,18 @@ public class CameraController : MonoBehaviour
     public LayerMask interactableLayer;
 
     //Movement setup
-    Vector2 input;
-    Vector3 camRotation;
-    Transform entityOnReach; // get the interactable entity that the player is aiming
+    private Vector2 input;
+    private Vector3 camRotation;
+    private Transform entityOnReach; // get the interactable entity that the player is aiming
 
-    void Start()
+    private void Start()
     {
         PlayerController.Instance.controls.Player.Camera.performed += ctx => input = ctx.ReadValue<Vector2>();
         PlayerController.Instance.controls.Player.Camera.canceled += ctx => input = Vector2.zero;
         PlayerController.Instance.controls.Player.Interact.performed += ctx => InteractWithEnviroment();
     }
 
-    void Update()
+    private void Update()
     {
         if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) 
         {
@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
 
     private void InteractWithEnviroment()
     {   
-        if(entityOnReach != null && entityOnReach.GetComponent<Interactable>())
+        if(entityOnReach != null && entityOnReach.GetComponent<Interactable>() && !DialogueManager.Instance.dialogueIsPlaying && !InventoryManager.Instance.onInventory)
             entityOnReach.GetComponent<Interactable>().Interact();
     }
 

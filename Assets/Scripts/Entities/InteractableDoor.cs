@@ -6,9 +6,9 @@ public class InteractableDoor : Interactable
     public float angularVelocity;
     public bool locked;
 
-    bool openDoor = false;
-    Quaternion openDoorRotation, closedDoorRotation;
-    BoxCollider doorCollider;
+    private bool openDoor = false;
+    private Quaternion openDoorRotation, closedDoorRotation;
+    private BoxCollider doorCollider;
 
     private void Start() {
         doorCollider = GetComponent<BoxCollider>();

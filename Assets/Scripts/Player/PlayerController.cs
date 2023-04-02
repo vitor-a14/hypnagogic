@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance; //Acess from other scripts
+    public static PlayerController Instance { get; private set; }
 
     //Player controls config's
     public float velocity;
     public float floorFriction;
     public LayerMask walkableLayers;
     public float groundDistanceCheck;
-    public bool isRunning;
+    [HideInInspector] public bool isRunning;
     [HideInInspector] public bool onGround;
 
     //Runnign and stamina
@@ -27,13 +27,17 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Rigidbody rigid;
     [HideInInspector] public Vector3 processedDirection;
     [HideInInspector] public Vector2 input;
-    Transform cam;
-    Vector3 direction;
-    Vector3 surfaceNormal;
+    private Transform cam;
+    private Vector3 direction;
+    private Vector3 surfaceNormal;
 
-    void Awake()
+    private void Awake()
     {
-        Instance = this;
+        if(Instance == null)
+            Instance = this;
+        else
+            Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
+
         controls = new Inputs();
         controls.Enable();
 
@@ -44,15 +48,17 @@ public class PlayerController : MonoBehaviour
         //Setup input callbacks
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
-        controls.Player.Inventory.performed += ctx => HandleInventory();
         controls.Player.Run.performed += ctx => TriggerRun();
         controls.Player.Run.canceled += ctx => isRunning = false;
 
         UseMouse(false);
     }
 
-    void Update()
+    private void Update()
     {
+        StaminaManagement();
+        CheckGround(); 
+
         //Input process
         Vector3 forward = Vector3.Cross(transform.up, -cam.right).normalized;
         Vector3 right = Vector3.Cross(transform.up, cam.forward).normalized;
@@ -61,7 +67,11 @@ public class PlayerController : MonoBehaviour
         input = Vector2.ClampMagnitude(input, 1f);
         direction = (forward * input.y + right * input.x) * velocity;
 
-        //Stamina managment
+        aboveToggleSpeed = rigid.velocity.magnitude > toggleSpeed; //Check if the player is not sticked in a wall
+    }
+
+    private void StaminaManagement()
+    {
         if(currentStamina > 0 && isRunning)
             currentStamina -= Time.deltaTime;
         else if(currentStamina <= 0)
@@ -74,8 +84,6 @@ public class PlayerController : MonoBehaviour
         }
         else if(!isRunning)
             staminarRecoveryTimer += Time.deltaTime;
-
-        aboveToggleSpeed = rigid.velocity.magnitude > toggleSpeed;
     }
 
     private void TriggerRun()
@@ -84,10 +92,8 @@ public class PlayerController : MonoBehaviour
         staminarRecoveryTimer = 0;
     }
 
-    void FixedUpdate() 
+    private void FixedUpdate() 
     {
-        CheckGround(); 
-
         if (onGround) //If it is on floor, apply friction and get the surface normal for movement
         {
             rigid.drag = floorFriction;
@@ -110,11 +116,6 @@ public class PlayerController : MonoBehaviour
         //Gravity logic
         Vector3 gravity = Physics.gravity.y * 5f * Vector3.up;
         rigid.AddForce(gravity, ForceMode.Acceleration);
-    }
-
-    private void HandleInventory()
-    {
-        InventoryManager.Instance.ListItems();
     }
 
     //Check if player is on floor and get the surface normal to normalize movement in all angles
