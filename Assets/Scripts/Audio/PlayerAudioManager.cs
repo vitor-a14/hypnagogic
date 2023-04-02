@@ -8,6 +8,7 @@ public class PlayerAudioManager : MonoBehaviour
     public float footstepFrequency;
     public AudioClip[] footsteps;
 
+    float toggleSpeed = 3f;
     AudioSource audioSorce;
 
     void Start()
@@ -21,10 +22,11 @@ public class PlayerAudioManager : MonoBehaviour
         while(true)
         {
             float actualFootstepFrequency = footstepFrequency;
+
             if(PlayerController.Instance.isRunning) 
                 actualFootstepFrequency /= PlayerController.Instance.runMultiplier;
 
-            if(PlayerController.Instance.input.x != 0 || PlayerController.Instance.input.y != 0 && PlayerController.Instance.onGround)
+            if((PlayerController.Instance.input.x != 0 || PlayerController.Instance.input.y != 0) && PlayerController.Instance.onGround && PlayerController.Instance.aboveToggleSpeed)
             {
                 PlayFootStep();
                 yield return new WaitForSeconds(actualFootstepFrequency);     

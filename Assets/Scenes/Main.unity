@@ -2669,7 +2669,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   groundDistanceCheck: 1.35
+  isRunning: 0
   onGround: 0
+  runMultiplier: 1.6
+  stamina: 10
+  staminaRecovery: 3
   rigid: {fileID: 0}
   processedDirection: {x: 0, y: 0, z: 0}
   input: {x: 0, y: 0}

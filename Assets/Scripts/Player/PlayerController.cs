@@ -8,12 +8,19 @@ public class PlayerController : MonoBehaviour
 
     //Player controls config's
     public float velocity;
-    [Range(1, 2)] public float runMultiplier;
     public float floorFriction;
     public LayerMask walkableLayers;
     public float groundDistanceCheck;
     public bool isRunning;
     [HideInInspector] public bool onGround;
+
+    //Runnign and stamina
+    [Range(1, 2)] public float runMultiplier;
+    public float stamina; //seconds that the player can run
+    public float staminaRecovery;
+    [HideInInspector] public bool aboveToggleSpeed;
+    private float currentStamina, staminarRecoveryTimer;
+    private float toggleSpeed = 3f;
 
     //Movement setup
     [HideInInspector] public Inputs controls; //Only this input is necessary, acess him from other scripts
@@ -29,10 +36,8 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         controls = new Inputs();
         controls.Enable();
-    }
 
-    private void Start() 
-    {
+        currentStamina = stamina;
         rigid = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
 
@@ -40,7 +45,7 @@ public class PlayerController : MonoBehaviour
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
         controls.Player.Inventory.performed += ctx => HandleInventory();
-        controls.Player.Run.performed += ctx => isRunning = true;
+        controls.Player.Run.performed += ctx => TriggerRun();
         controls.Player.Run.canceled += ctx => isRunning = false;
 
         UseMouse(false);
@@ -55,6 +60,28 @@ public class PlayerController : MonoBehaviour
         //Input treatment
         input = Vector2.ClampMagnitude(input, 1f);
         direction = (forward * input.y + right * input.x) * velocity;
+
+        //Stamina managment
+        if(currentStamina > 0 && isRunning)
+            currentStamina -= Time.deltaTime;
+        else if(currentStamina <= 0)
+            isRunning = false;
+
+        if(staminarRecoveryTimer >= staminaRecovery)
+        {
+            if(currentStamina < stamina)
+                currentStamina += 2 * Time.deltaTime;
+        }
+        else if(!isRunning)
+            staminarRecoveryTimer += Time.deltaTime;
+
+        aboveToggleSpeed = rigid.velocity.magnitude > toggleSpeed;
+    }
+
+    private void TriggerRun()
+    {
+        isRunning = currentStamina > 0 && aboveToggleSpeed;
+        staminarRecoveryTimer = 0;
     }
 
     void FixedUpdate() 

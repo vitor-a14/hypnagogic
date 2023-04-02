@@ -44,8 +44,7 @@ public class HeadBobbing : MonoBehaviour
     //Check if the head bobbing need to be applied based on player velocity
     private void CheckMotion()
     {
-        float speed = PlayerController.Instance.rigid.velocity.magnitude;
-        if(speed < toggleSpeed || !PlayerController.Instance.onGround) return;
+        if(!PlayerController.Instance.aboveToggleSpeed || !PlayerController.Instance.onGround) return;
 
         PlayMotion(FootStepMotion());
     }
