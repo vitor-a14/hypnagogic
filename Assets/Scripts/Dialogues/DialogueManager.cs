@@ -11,6 +11,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private TMP_Text npcName;
 
     [Header("Choices UI")]
     [SerializeField] private GameObject[] choices;
@@ -66,10 +67,16 @@ public class DialogueManager : MonoBehaviour
         if(currentStory.canContinue) //Check if there is more dialogue to play
         {
             dialogueText.text = currentStory.Continue();
-            DisplayChoices();
+            StartCoroutine(DisplayChoicesCoroutine());
         }
         else
             EndDialogue();
+    }
+
+    private IEnumerator DisplayChoicesCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        DisplayChoices();
     }
 
     public void EndDialogue()
