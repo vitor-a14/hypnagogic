@@ -53,9 +53,13 @@ public class HeadBobbing : MonoBehaviour
     //Animation math
     private Vector3 FootStepMotion()
     {
+        float actualFrequency = frequency;
+        if(PlayerController.Instance.isRunning) 
+            actualFrequency *= PlayerController.Instance.runMultiplier;
+
         Vector3 pos = Vector3.zero;
-        pos.y += Mathf.Sin(Time.time * frequency) * amplitude;
-        pos.x += Mathf.Cos(Time.time * frequency / 2) * amplitude * 2;
+        pos.y += Mathf.Sin(Time.time * actualFrequency) * amplitude;
+        pos.x += Mathf.Cos(Time.time * actualFrequency / 2) * amplitude * 2;
         return pos;
     }
 

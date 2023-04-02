@@ -8,9 +8,11 @@ public class PlayerController : MonoBehaviour
 
     //Player controls config's
     public float velocity;
+    [Range(1, 2)] public float runMultiplier;
     public float floorFriction;
     public LayerMask walkableLayers;
     public float groundDistanceCheck;
+    public bool isRunning;
     [HideInInspector] public bool onGround;
 
     //Movement setup
@@ -38,6 +40,8 @@ public class PlayerController : MonoBehaviour
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
         controls.Player.Inventory.performed += ctx => HandleInventory();
+        controls.Player.Run.performed += ctx => isRunning = true;
+        controls.Player.Run.canceled += ctx => isRunning = false;
 
         UseMouse(false);
     }
@@ -70,7 +74,11 @@ public class PlayerController : MonoBehaviour
 
         //Movement apply
         if(!DialogueManager.Instance.dialogueIsPlaying && !InventoryManager.Instance.onInventory) 
+        {
             rigid.velocity = new Vector3(processedDirection.x, rigid.velocity.y, processedDirection.z);
+            if(isRunning) 
+                rigid.velocity *= runMultiplier;
+        }
 
         //Gravity logic
         Vector3 gravity = Physics.gravity.y * 5f * Vector3.up;

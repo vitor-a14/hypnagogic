@@ -20,10 +20,14 @@ public class PlayerAudioManager : MonoBehaviour
     {   
         while(true)
         {
+            float actualFootstepFrequency = footstepFrequency;
+            if(PlayerController.Instance.isRunning) 
+                actualFootstepFrequency /= PlayerController.Instance.runMultiplier;
+
             if(PlayerController.Instance.input.x != 0 || PlayerController.Instance.input.y != 0 && PlayerController.Instance.onGround)
             {
                 PlayFootStep();
-                yield return new WaitForSeconds(footstepFrequency);     
+                yield return new WaitForSeconds(actualFootstepFrequency);     
             }
             else 
             {
