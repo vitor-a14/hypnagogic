@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Inputs controls; //Only this input is necessary, acess him from other scripts
     [HideInInspector] public Rigidbody rigid;
     [HideInInspector] public Vector3 processedDirection;
-    Vector2 input;
+    [HideInInspector] public Vector2 input;
     Transform cam;
     Vector3 direction;
     Vector3 surfaceNormal;
