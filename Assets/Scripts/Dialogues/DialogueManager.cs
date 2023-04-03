@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Ink.Runtime;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Choices UI")]
     [SerializeField] private GameObject[] choices;
     private TMP_Text[] choicesText;
+    private Button[] choicesButton;
 
     [Header("Load Globals JSON")]
     [SerializeField] private TextAsset loadGlobalsJson;
@@ -43,10 +45,12 @@ public class DialogueManager : MonoBehaviour
         PlayerController.Instance.controls.Player.Dialogue.performed += ctx => ContinueDialogue();
  
         choicesText = new TMP_Text[choices.Length];
+        choicesButton = new Button[choices.Length];
         int index = 0;
         foreach(GameObject choice in choices)
         {
             choicesText[index] = choice.GetComponentInChildren<TMP_Text>();
+            choicesButton[index] = choice.GetComponent<Button>();
             index++;
         }
     }
@@ -61,7 +65,7 @@ public class DialogueManager : MonoBehaviour
         dialogueVariables.StartListening(currentStory);
 
         dialogueText.text = currentStory.currentText;
-        DisplayChoices();
+        StartCoroutine(DisplayChoicesCoroutine());
         HandleTags(currentStory.currentTags);
     }
 
@@ -134,6 +138,7 @@ public class DialogueManager : MonoBehaviour
         // Enable and initialize the choices UI up to the amount of the choices in the dialogue
         foreach(Choice choice in currentChoices)
         {
+            choicesButton[index].interactable = true;
             choices[index].gameObject.SetActive(true);
             choicesText[index].text = choice.text;
             index++;
@@ -141,7 +146,10 @@ public class DialogueManager : MonoBehaviour
 
         // Go to the remaining choices and disable
         for(int i = index; i < choices.Length; i++)
+        {
+            choicesButton[i].interactable = false;
             choices[i].gameObject.SetActive(false);
+        }
     }
 
     public Ink.Runtime.Object GetVariableState(string variableName)
