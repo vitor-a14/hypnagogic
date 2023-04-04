@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3e45e71e7c8364041b8767141ee29348
+guid: e08bf56ab85820544b298f98138ff258
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Dogica
+  - VCR OSD Mono
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
