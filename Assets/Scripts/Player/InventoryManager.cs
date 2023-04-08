@@ -10,7 +10,7 @@ public class InventoryManager : MonoBehaviour
     public List<Item> items = new List<Item>();
     public GameObject inventoryItem; //Item HUD instance
     public Transform contentGrid; //Grid where the items will be displayed
-    public GameObject itemWindow; //Item window
+    public TMP_Text itemName, itemDescription;
     public GameObject inventoryComponent; //All the inventory HUD to show or hide
     public bool onInventory = false;
 
@@ -48,7 +48,6 @@ public class InventoryManager : MonoBehaviour
 
         onInventory = !onInventory;
 
-        itemWindow.SetActive(false);
         inventoryComponent.SetActive(onInventory);
         PlayerController.Instance.UseMouse(onInventory);
 
@@ -60,11 +59,9 @@ public class InventoryManager : MonoBehaviour
         foreach (var item in items)
         {
             GameObject obj = Instantiate(inventoryItem, contentGrid);
-            var itemName = obj.transform.Find("Name").GetComponent<TMP_Text>();
             var itemIcon = obj.transform.Find("Icon").GetComponent<Image>();
             obj.GetComponent<HUDItemHandler>().item = item;
             
-            itemName.text = item.name;
             itemIcon.sprite = item.icon;
         }
     }
@@ -74,18 +71,8 @@ public class InventoryManager : MonoBehaviour
     {
         if(!onInventory) return; //Only show item if inventory is open
 
-        itemWindow.SetActive(true); //Show window
-
-        //If there is content in the windows, remove them
-        Transform itemWindowContent = itemWindow.transform.GetChild(0);
-        if(itemWindowContent.childCount > 0)
-        {
-            for(int i = 0; i < itemWindowContent.childCount; i++)
-                Destroy(itemWindowContent.GetChild(i).gameObject);
-        }
-
-        //Spawn the content
-        Instantiate(item.itemDescriptionWindow, itemWindowContent);
+        itemName.text = item.itemName;
+        itemDescription.text = item.description;
     }
 
     public bool SearchForItem(Item targetItem)
