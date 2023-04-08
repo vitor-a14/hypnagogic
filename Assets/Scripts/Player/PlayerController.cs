@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance { get; private set; }
 
     //Player controls config's
+    [Header("Controls")]
     public float velocity;
     public float floorFriction;
     public LayerMask walkableLayers;
@@ -15,12 +16,20 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool onGround;
 
     //Runnign and stamina
+    [Header("Running and Stamina")]
     [Range(1, 2)] public float runMultiplier;
     public float stamina; //seconds that the player can run
     public float staminaRecovery;
     [HideInInspector] public bool aboveToggleSpeed;
     private float currentStamina, staminarRecoveryTimer;
     private float toggleSpeed = 1.5f;
+
+    //Crouching
+    [Header("Crouching")]
+    public float standingHeight;
+    public float crouchingHeight;
+    public float crouchingMultiplier;
+    [HideInInspector] public bool isCrounching = false;
 
     //Movement setup
     [HideInInspector] public Inputs controls; //Only this input is necessary, acess him from other scripts
@@ -30,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private Transform cam;
     private Vector3 direction;
     private Vector3 surfaceNormal;
+    private CapsuleCollider col;
 
     private void Awake()
     {
@@ -44,11 +54,13 @@ public class PlayerController : MonoBehaviour
         currentStamina = stamina;
         rigid = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
+        col = GetComponent<CapsuleCollider>();
 
         //Setup input callbacks
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
         controls.Player.Run.performed += ctx => TriggerRun();
+        controls.Player.Crouch.performed += ctx => Crouch();
 
         UseMouse(false);
     }
@@ -90,6 +102,13 @@ public class PlayerController : MonoBehaviour
 
     private void TriggerRun()
     {
+        //If the player is crouching, try to stand up
+        if(isCrounching)
+        {
+            Crouch();
+            if(isCrounching) return; //If the player continues crouching, do not start the run logic
+        }
+
         isRunning = currentStamina > 0 && aboveToggleSpeed;
         staminarRecoveryTimer = 0;
     }
@@ -115,6 +134,11 @@ public class PlayerController : MonoBehaviour
                 processedDirection.x *= runMultiplier;
                 processedDirection.z *= runMultiplier;
             }
+            else if(isCrounching)
+            {
+                processedDirection.x *= crouchingMultiplier;
+                processedDirection.z *= crouchingMultiplier;
+            }
 
             rigid.velocity = new Vector3(processedDirection.x, rigid.velocity.y, processedDirection.z);
         }
@@ -137,6 +161,20 @@ public class PlayerController : MonoBehaviour
         {
             onGround = false;
         }
+    }
+
+    private void Crouch()
+    {
+        //If the player is already crouching, check if he can stand up
+        if(isCrounching && Physics.Raycast(transform.position, transform.up, 1.5f, walkableLayers))
+            return;
+
+        isCrounching = !isCrounching;
+
+        if(isCrounching)
+            col.height = crouchingHeight;
+        else
+            col.height = standingHeight;
     }
 
     public void UseMouse(bool state) 

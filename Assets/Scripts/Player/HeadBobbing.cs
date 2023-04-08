@@ -54,6 +54,8 @@ public class HeadBobbing : MonoBehaviour
         float actualFrequency = frequency;
         if(PlayerController.Instance.isRunning) 
             actualFrequency *= PlayerController.Instance.runMultiplier;
+        else if(PlayerController.Instance.isCrounching) 
+            actualFrequency *= PlayerController.Instance.crouchingMultiplier;
 
         Vector3 pos = Vector3.zero;
         pos.y += Mathf.Sin(Time.time * actualFrequency) * amplitude;

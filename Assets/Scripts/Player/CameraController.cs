@@ -32,8 +32,8 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        camRotation.y += input.x * sensivity * Time.deltaTime;
-        camRotation.x -= input.y * sensivity * Time.deltaTime;
+        camRotation.y += input.x * sensivity * Time.fixedDeltaTime;
+        camRotation.x -= input.y * sensivity * Time.fixedDeltaTime;
         camRotation.x = Mathf.Clamp(camRotation.x, -maxAngle, maxAngle); 
 
         entityOnReach = GetEntityOnReach();

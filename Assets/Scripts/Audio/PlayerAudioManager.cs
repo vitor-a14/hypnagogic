@@ -25,6 +25,8 @@ public class PlayerAudioManager : MonoBehaviour
 
             if(PlayerController.Instance.isRunning) 
                 actualFootstepFrequency /= PlayerController.Instance.runMultiplier;
+            else if(PlayerController.Instance.isCrounching)
+                actualFootstepFrequency /= PlayerController.Instance.crouchingMultiplier;
 
             if((PlayerController.Instance.input.x != 0 || PlayerController.Instance.input.y != 0) && PlayerController.Instance.onGround && PlayerController.Instance.aboveToggleSpeed)
             {
