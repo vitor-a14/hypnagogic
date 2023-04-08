@@ -14,6 +14,9 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventoryComponent; //All the inventory HUD to show or hide
     public bool onInventory = false;
 
+    //Is this boolean is true, it means that the fade animation of the inventory is running. The player only can move when this is finished
+    private bool inventoryTransition = false; 
+
     [SerializeField] private AudioClip addItemAudio, removeItemAudio;
     
     private void Awake()
@@ -44,11 +47,15 @@ public class InventoryManager : MonoBehaviour
     //Also update if the player can move or not
     public void ListItems() 
     {
-        if(!PlayerController.Instance.onGround || DialogueManager.Instance.dialogueIsPlaying) return;
+        if(!PlayerController.Instance.onGround || DialogueManager.Instance.dialogueIsPlaying || inventoryTransition) return;
+        //Inventory transition: the player can only open or close the inventory if he is not in the fade animation
 
         onInventory = !onInventory;
 
-        inventoryComponent.SetActive(onInventory);
+        itemName.text = "";
+        itemDescription.text = "";
+
+        StartCoroutine(InventoryHUDFade(onInventory)); //Apply fade in/out animation in the inventyory HUD
         PlayerController.Instance.UseMouse(onInventory);
 
         if(!onInventory) return;
@@ -84,5 +91,44 @@ public class InventoryManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    //Change the inventory group alpha to make a transition in the UI
+    private IEnumerator InventoryHUDFade(bool fadeIn)
+    {
+        inventoryTransition = true;
+
+        CanvasGroup inventoryCanvas = inventoryComponent.GetComponent<CanvasGroup>();
+        float t = 0;
+        float maxTime = 0.5f;
+
+        if(fadeIn)
+        {
+            inventoryComponent.SetActive(true);
+            inventoryCanvas.alpha = 0;
+        }
+
+        while(t < maxTime)
+        {
+            if(fadeIn)
+                inventoryCanvas.alpha = Mathf.Lerp(inventoryCanvas.alpha, 1, t);
+            else
+                inventoryCanvas.alpha = Mathf.Lerp(inventoryCanvas.alpha, 0, t);
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        if(fadeIn)
+            inventoryCanvas.alpha = 1;
+        else
+        {
+            inventoryCanvas.alpha = 0;
+            inventoryComponent.SetActive(false);
+        }
+
+        inventoryTransition = false;
+
+        yield return null;
     }
 }
