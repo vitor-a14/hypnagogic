@@ -6,7 +6,7 @@ public class HeadBobbing : MonoBehaviour
 {
     public bool isActive; //Optional for the player
 
-    [SerializeField, Range(0, 0.001f)] private float amplitude = 0.015f; 
+    [SerializeField, Range(0, 0.05f)] private float amplitude = 0.015f; 
     [SerializeField, Range(0, 30)] private float frequency = 10.0f;
 
     private Vector3 startPos;
@@ -21,7 +21,7 @@ public class HeadBobbing : MonoBehaviour
         startPos = cam.localPosition;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(!isActive) return;
 
@@ -64,7 +64,7 @@ public class HeadBobbing : MonoBehaviour
     private void ResetPosition()
     {
         if(cam.localPosition == startPos) return;
-        cam.localPosition = Vector3.Lerp(cam.localPosition, startPos, 2 * Time.deltaTime);
+        cam.localPosition = Vector3.Lerp(cam.localPosition, startPos, 2 * Time.fixedDeltaTime);
     }
 
     private void PlayMotion(Vector3 motion)

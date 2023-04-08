@@ -55,7 +55,7 @@ public class InventoryManager : MonoBehaviour
         itemName.text = "";
         itemDescription.text = "";
 
-        StartCoroutine(InventoryHUDFade(onInventory)); //Apply fade in/out animation in the inventyory HUD
+        StartCoroutine(InventoryHUDFadeCoroutine(onInventory)); //Apply fade in/out animation in the inventyory HUD
         PlayerController.Instance.UseMouse(onInventory);
 
         if(!onInventory) return;
@@ -94,13 +94,13 @@ public class InventoryManager : MonoBehaviour
     }
 
     //Change the inventory group alpha to make a transition in the UI
-    private IEnumerator InventoryHUDFade(bool fadeIn)
+    private IEnumerator InventoryHUDFadeCoroutine(bool fadeIn)
     {
         inventoryTransition = true;
 
         CanvasGroup inventoryCanvas = inventoryComponent.GetComponent<CanvasGroup>();
         float t = 0;
-        float maxTime = 0.5f;
+        float maxTime = 0.18f;
 
         if(fadeIn)
         {
@@ -115,7 +115,7 @@ public class InventoryManager : MonoBehaviour
             else
                 inventoryCanvas.alpha = Mathf.Lerp(inventoryCanvas.alpha, 0, t);
 
-            t += Time.deltaTime;
+            t += Time.fixedDeltaTime;
             yield return null;
         }
 

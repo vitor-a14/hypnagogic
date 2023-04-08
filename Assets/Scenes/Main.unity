@@ -2476,6 +2476,7 @@ GameObject:
   - component: {fileID: 1021298992}
   - component: {fileID: 1021298994}
   - component: {fileID: 1021298993}
+  - component: {fileID: 1021298995}
   m_Layer: 5
   m_Name: Dialogue
   m_TagString: Untagged
@@ -2544,6 +2545,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021298991}
   m_CullTransparentMesh: 1
+--- !u!225 &1021298995
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021298991}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1024518867
 GameObject:
   m_ObjectHideFlags: 0
@@ -2674,7 +2687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
-  amplitude: 0.000453
+  amplitude: 0.008
   frequency: 15
   cam: {fileID: 963194228}
   cameraHolder: {fileID: 1952741166}
@@ -5005,7 +5018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10eb89b5409c48c4fbcc50a6859c3aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensivity: 25
+  sensivity: 8
   maxAngle: 65
   interactionDistance: 2
   interactableLayer:

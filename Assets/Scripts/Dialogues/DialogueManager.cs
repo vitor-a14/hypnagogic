@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
     public bool dialogueIsPlaying;
 
     private DialogueVariables dialogueVariables;
+    private CanvasGroup dialogueCanvas;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class DialogueManager : MonoBehaviour
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
 
         dialogueVariables = new DialogueVariables(loadGlobalsJson);
+        dialogueCanvas = dialoguePanel.GetComponent<CanvasGroup>();
     }
 
     private void Start()
@@ -60,7 +62,7 @@ public class DialogueManager : MonoBehaviour
         PlayerController.Instance.UseMouse(true);
         currentStory = new Story(inkJson.text);
         dialogueIsPlaying = true;
-        dialoguePanel.SetActive(true); 
+        StartCoroutine(DialogueHUDFadeCoroutine(true));
 
         dialogueVariables.StartListening(currentStory);
 
@@ -114,7 +116,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
-        dialoguePanel.SetActive(false);
+        StartCoroutine(DialogueHUDFadeCoroutine(false));
         PlayerController.Instance.UseMouse(false);
         dialogueText.text = "";
     }
@@ -160,5 +162,38 @@ public class DialogueManager : MonoBehaviour
             Debug.LogWarning("Ink variable was found to be null: " + variableName);
 
         return variableValue;
+    }
+
+    private IEnumerator DialogueHUDFadeCoroutine(bool fadeIn)
+    {
+        float t = 0;
+        float maxTime = 0.18f;
+
+        if(fadeIn)
+        {
+            dialogueCanvas.alpha = 0;
+            dialoguePanel.SetActive(true);
+        }
+
+        while(t < maxTime)
+        {
+            if(fadeIn)
+                dialogueCanvas.alpha = Mathf.Lerp(dialogueCanvas.alpha, 1, t);
+            else
+                dialogueCanvas.alpha = Mathf.Lerp(dialogueCanvas.alpha, 0, t);
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        if(fadeIn)
+            dialogueCanvas.alpha = 1;
+        else
+        {
+            dialogueCanvas.alpha = 0;
+            dialoguePanel.SetActive(false);
+        }
+
+        yield return null;
     }
 }
