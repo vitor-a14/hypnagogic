@@ -1,2 +1,2 @@
-# dot_place
-A game about the internet.
+# Hypnagogic
+A game where you explore a dream landscape.
