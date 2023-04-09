@@ -55,7 +55,9 @@ public class InventoryManager : MonoBehaviour
         itemName.text = "";
         itemDescription.text = "";
 
-        StartCoroutine(InventoryHUDFadeCoroutine(onInventory)); //Apply fade in/out animation in the inventyory HUD
+        StartCoroutine(InventoryFadeDurationCoroutine(HUDEffects.fadeDuration)); //Fade duration delay
+        HUDEffects.Instance.FadeUI(inventoryComponent, onInventory); //Apply fade in/out animation in the inventyory HUD
+
         PlayerController.Instance.UseMouse(onInventory);
 
         if(!onInventory) return;
@@ -93,42 +95,10 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    //Change the inventory group alpha to make a transition in the UI
-    private IEnumerator InventoryHUDFadeCoroutine(bool fadeIn)
+    private IEnumerator InventoryFadeDurationCoroutine(float duration)
     {
         inventoryTransition = true;
-
-        CanvasGroup inventoryCanvas = inventoryComponent.GetComponent<CanvasGroup>();
-        float t = 0;
-        float maxTime = 0.18f;
-
-        if(fadeIn)
-        {
-            inventoryComponent.SetActive(true);
-            inventoryCanvas.alpha = 0;
-        }
-
-        while(t < maxTime)
-        {
-            if(fadeIn)
-                inventoryCanvas.alpha = Mathf.Lerp(inventoryCanvas.alpha, 1, t);
-            else
-                inventoryCanvas.alpha = Mathf.Lerp(inventoryCanvas.alpha, 0, t);
-
-            t += Time.fixedDeltaTime;
-            yield return null;
-        }
-
-        if(fadeIn)
-            inventoryCanvas.alpha = 1;
-        else
-        {
-            inventoryCanvas.alpha = 0;
-            inventoryComponent.SetActive(false);
-        }
-
+        yield return new WaitForSeconds(duration);
         inventoryTransition = false;
-
-        yield return null;
     }
 }

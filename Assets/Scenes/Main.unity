@@ -4114,6 +4114,7 @@ GameObject:
   - component: {fileID: 1463770349}
   - component: {fileID: 1463770348}
   - component: {fileID: 1463770350}
+  - component: {fileID: 1463770351}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4169,6 +4170,18 @@ MonoBehaviour:
   popUpWindow: {fileID: 452165027}
   popUpInstance: {fileID: 3215139169229437774, guid: eda4a432367743441a724d06aa51dc1a, type: 3}
   interactionIcon: {fileID: 1713767137}
+--- !u!114 &1463770351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463770347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b17278f1138d2f4a833f3bb2d59eadd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1526991855
 GameObject:
   m_ObjectHideFlags: 0
