@@ -22,6 +22,12 @@ public class HUDEffects : MonoBehaviour
     private IEnumerator UIFadeCoroutine(GameObject uiElement, bool fadeIn)
     {
         CanvasGroup canvas = uiElement.GetComponent<CanvasGroup>();
+        if(canvas == null)
+        {
+            Debug.LogError("The object does not have a canvas group element!");
+            yield return null;
+        }
+
         float t = 0;
 
         if(fadeIn)

@@ -59,7 +59,7 @@ public class HeadBobbing : MonoBehaviour
 
         Vector3 pos = Vector3.zero;
         pos.y += Mathf.Sin(Time.time * actualFrequency) * amplitude;
-        pos.x += Mathf.Cos(Time.time * actualFrequency / 2) * amplitude * 2;
+        pos.x += Mathf.Cos(Time.time * actualFrequency / 2) * amplitude / 2;
         return pos;
     }
 
