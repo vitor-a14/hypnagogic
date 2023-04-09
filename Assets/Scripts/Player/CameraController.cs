@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour
             entityOnReach.GetComponent<Interactable>().Interact();
     }
 
-    private void FixedUpdate() 
+    private void LateUpdate() 
     {
         transform.rotation = Quaternion.Euler(camRotation);
     }

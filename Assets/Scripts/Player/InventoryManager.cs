@@ -14,6 +14,9 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventoryComponent; //All the inventory HUD to show or hide
     public bool onInventory = false;
 
+    public Transform equippablePivot;
+    private GameObject currentEquipedItem;
+
     //Is this boolean is true, it means that the fade animation of the inventory is running. The player only can move when this is finished
     private bool inventoryTransition = false; 
 
@@ -27,6 +30,18 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
 
         PlayerController.Instance.controls.Player.Inventory.performed += ctx => ListItems();
+    }
+
+    private void LateUpdate() 
+    {
+        if(currentEquipedItem != null)
+        {
+            currentEquipedItem.transform.position = Vector3.Slerp(currentEquipedItem.transform.position, equippablePivot.position, 25 * Time.deltaTime);
+            var rot = Quaternion.LookRotation(equippablePivot.forward);
+            rot.x = 0;
+            rot.z = 0;
+            currentEquipedItem.transform.rotation = rot;
+        }
     }
 
     public void Add(Item item) 
@@ -82,6 +97,8 @@ public class InventoryManager : MonoBehaviour
 
         itemName.text = item.itemName;
         itemDescription.text = item.description;
+
+        EquipItem(item);
     }
 
     public bool SearchForItem(Item targetItem)
@@ -93,6 +110,17 @@ public class InventoryManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void EquipItem(Item item)
+    {
+        if(!item.isEquippable) return;
+
+        if(currentEquipedItem != null)
+            Destroy(currentEquipedItem);
+
+        currentEquipedItem = Instantiate(item.equippableInstance, equippablePivot);
+        currentEquipedItem.transform.SetParent(null);
     }
 
     private IEnumerator InventoryFadeDurationCoroutine(float duration)

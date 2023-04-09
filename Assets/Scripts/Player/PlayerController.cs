@@ -82,6 +82,17 @@ public class PlayerController : MonoBehaviour
 
         if(!aboveToggleSpeed)
             isRunning = false;
+
+        if (onGround) //If it is on floor, apply friction and get the surface normal for movement
+        {
+            rigid.drag = floorFriction;
+            processedDirection = Vector3.ProjectOnPlane(direction, surfaceNormal);
+        }
+        else //If is not on floor, doesn't apply friction and move normally
+        {
+            rigid.drag = 0f;
+            processedDirection = direction;
+        }
     }
 
     private void StaminaManagement()
@@ -115,17 +126,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate() 
     {
-        if (onGround) //If it is on floor, apply friction and get the surface normal for movement
-        {
-            rigid.drag = floorFriction;
-            processedDirection = Vector3.ProjectOnPlane(direction, surfaceNormal);
-        }
-        else //If is not on floor, doesn't apply friction and move normally
-        {
-            rigid.drag = 0f;
-            processedDirection = direction;
-        }
-
         //Movement apply
         if(!DialogueManager.Instance.dialogueIsPlaying && !InventoryManager.Instance.onInventory) 
         {
