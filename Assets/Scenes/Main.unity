@@ -2633,7 +2633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1021298992
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2869,6 +2869,9 @@ MonoBehaviour:
   equippablePivot: {fileID: 2143288209}
   addItemAudio: {fileID: 8300000, guid: eeb3beb6c510db94087c7c074ea86989, type: 3}
   removeItemAudio: {fileID: 8300000, guid: d619c36df84509c40b158bf8d65d0978, type: 3}
+  openInventoryAudio: {fileID: 8300000, guid: 61efe914b4e3c8c489684b26b9ace7ba, type: 3}
+  closeInventoryAudio: {fileID: 8300000, guid: 3723878f6bbed5048b590839c630bf06, type: 3}
+  showItemAudio: {fileID: 8300000, guid: 221fe30d3e73c754abc78d68fe5f2a14, type: 3}
 --- !u!114 &1024518874
 MonoBehaviour:
   m_ObjectHideFlags: 0

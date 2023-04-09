@@ -21,6 +21,8 @@ public class InventoryManager : MonoBehaviour
     private bool inventoryTransition = false; 
 
     [SerializeField] private AudioClip addItemAudio, removeItemAudio;
+    [SerializeField] private AudioClip openInventoryAudio, closeInventoryAudio;
+    [SerializeField] private AudioClip showItemAudio;
     
     private void Awake()
     {
@@ -67,6 +69,9 @@ public class InventoryManager : MonoBehaviour
 
         onInventory = !onInventory;
 
+        if(onInventory) AudioManager.Instance.PlayOneShot2D(openInventoryAudio, gameObject, AudioManager.AudioType.SFX, 1f);
+        else AudioManager.Instance.PlayOneShot2D(closeInventoryAudio, gameObject, AudioManager.AudioType.SFX, 1f);
+
         itemName.text = "";
         itemDescription.text = "";
 
@@ -97,6 +102,8 @@ public class InventoryManager : MonoBehaviour
 
         itemName.text = item.itemName;
         itemDescription.text = item.description;
+
+        AudioManager.Instance.PlayOneShot2D(showItemAudio, gameObject, AudioManager.AudioType.SFX, 1f);
 
         EquipItem(item);
     }
