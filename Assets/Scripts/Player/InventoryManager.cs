@@ -82,20 +82,9 @@ public class InventoryManager : MonoBehaviour
 
         if(!onInventory) return;
 
-        foreach (Transform item in contentGrid)
-            Destroy(item.gameObject);
-
-        foreach (var item in items)
-        {
-            GameObject obj = Instantiate(inventoryItem, contentGrid);
-            var itemIcon = obj.transform.Find("Icon").GetComponent<Image>();
-            obj.GetComponent<HUDItemHandler>().item = item;
-            
-            itemIcon.sprite = item.icon;
-        }
+        UpdateItemList();
     }
 
-    //Open a window in the inventory to show the item description
     public void ShowItem(Item item)
     {
         if(!onInventory) return; //Only show item if inventory is open
@@ -119,15 +108,51 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
+    private void UpdateItemList()
+    {
+        foreach (Transform item in contentGrid)
+            Destroy(item.gameObject);
+
+        foreach (var item in items)
+        {
+            GameObject obj = Instantiate(inventoryItem, contentGrid);
+            var itemIcon = obj.transform.Find("Icon").GetComponent<Image>();
+            obj.GetComponent<HUDItemHandler>().item = item;
+
+            if(currentEquipedItem != null && item.itemName == currentEquipedItem.name)
+            {
+                obj.transform.Find("Equipped Tag").gameObject.SetActive(true);
+                itemName.text = item.itemName;
+                itemDescription.text = item.description;
+            }
+            
+            itemIcon.sprite = item.icon;
+        }
+    }
+
     private void EquipItem(Item item)
     {
         if(!item.isEquippable) return;
 
-        if(currentEquipedItem != null)
+        if(currentEquipedItem != null && currentEquipedItem.name != item.itemName) //If another item is already equipped, remove it and instance the new one
+        {
             Destroy(currentEquipedItem);
+        }
+        else if(currentEquipedItem != null && currentEquipedItem.name == item.itemName) //If the item is already equipped, just remove it and return
+        {
+            Destroy(currentEquipedItem);
+            currentEquipedItem = null;
+            itemName.text = "";
+            itemDescription.text = "";
+            UpdateItemList();
+            return;
+        }
 
         currentEquipedItem = Instantiate(item.equippableInstance, equippablePivot);
+        currentEquipedItem.name = item.itemName;
         currentEquipedItem.transform.SetParent(null);
+
+        UpdateItemList();
     }
 
     private IEnumerator InventoryFadeDurationCoroutine(float duration)
