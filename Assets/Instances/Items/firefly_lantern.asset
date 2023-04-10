@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ad1169b20cce9f4d9d42b571597d278, type: 3}
-  m_Name: old_lantern
+  m_Name: firefly_lantern
   m_EditorClassIdentifier: 
   id: 1
-  itemName: Old Lantern
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  description: May help you in difficult times.
+  itemName: Firefly Lantern
+  icon: {fileID: 21300000, guid: 8131e91fff834cc43b919a0e6574dacb, type: 3}
+  description: The old lantern lost its flame a long time ago. However, for some
+    curious reason, fireflies endlessly fly around the object, rekindling it's purpose.
   isEquippable: 1
   equippableInstance: {fileID: 7747471819500327175, guid: 330441a30a75ef44e978cbaea77785d7, type: 3}

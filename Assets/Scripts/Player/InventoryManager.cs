@@ -49,14 +49,14 @@ public class InventoryManager : MonoBehaviour
     public void Add(Item item) 
     {
         items.Add(item);
-        HUDManager.Instance.TriggerPopUp(item.itemName + " added");
+        HUDManager.Instance.CollectedItemPopUp(item);
         AudioManager.Instance.PlayOneShot2D(addItemAudio, gameObject, AudioManager.AudioType.SFX, 1);
     }
 
     public void Remove(Item item) 
     {
         items.Remove(item);
-        HUDManager.Instance.TriggerPopUp(item.itemName + " removed");
+        HUDManager.Instance.TextPopUp(item.itemName + " was removed from the inventory");
         AudioManager.Instance.PlayOneShot2D(removeItemAudio, gameObject, AudioManager.AudioType.SFX, 1);
     }
 

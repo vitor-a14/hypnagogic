@@ -19,6 +19,21 @@ public class HUDEffects : MonoBehaviour
         StartCoroutine(UIFadeCoroutine(uiElement, fadeIn));
     }
 
+    public void FadeInAndOut(GameObject uiElement, float duration, bool destroyAfter)
+    {
+        StartCoroutine(UIFadeInAndOutCoroutine(uiElement, duration, destroyAfter));
+    }
+
+    private IEnumerator UIFadeInAndOutCoroutine(GameObject uiElement, float duration, bool destroyAfter)
+    {
+        StartCoroutine(UIFadeCoroutine(uiElement, true));
+        yield return new WaitForSeconds(duration);
+        StartCoroutine(UIFadeCoroutine(uiElement, false));
+        yield return new WaitForSeconds(fadeDuration);
+        if(destroyAfter)
+            Destroy(uiElement);
+    }
+
     private IEnumerator UIFadeCoroutine(GameObject uiElement, bool fadeIn)
     {
         CanvasGroup canvas = uiElement.GetComponent<CanvasGroup>();

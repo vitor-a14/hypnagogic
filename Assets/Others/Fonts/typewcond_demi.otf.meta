@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7e9349143f0c0014b8d4968223c25030
+guid: 26ad5499453cd894081c1ce38da76fde
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Linux Libertine
+  - Typewriter_Condensed_Demi
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e08bf56ab85820544b298f98138ff258
+guid: 805127f3c52c94f499942cb4594d6988
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - VCR OSD Mono
+  - Aref Ruqaa Ink
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

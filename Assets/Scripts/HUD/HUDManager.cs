@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class HUDManager : MonoBehaviour
     [Header("Pop Up")]
     [SerializeField] private float popUpDuration;
     [SerializeField] private Transform popUpWindow;
-    [SerializeField] private GameObject popUpInstance;
+    [SerializeField] private GameObject itemPopUpInstance;
+    [SerializeField] private GameObject textPopUpInstance;
 
     [Header("Interaction")]
     public GameObject interactionIcon; //A HUD element that output for the player if a interactable is in reach
@@ -20,12 +22,21 @@ public class HUDManager : MonoBehaviour
         Instance = this;
     }
 
-    public void TriggerPopUp(string message)
+    public void CollectedItemPopUp(Item item)
     {
-        GameObject popUp = Instantiate(popUpInstance, popUpWindow);
-        popUp.GetComponentInChildren<TMP_Text>().text = message;
+        GameObject popUp = Instantiate(itemPopUpInstance, popUpWindow);
+        popUp.GetComponentInChildren<TMP_Text>().text = item.itemName;
+        popUp.transform.GetChild(1).GetComponent<Image>().sprite = item.icon;
 
-        Destroy(popUp, popUpDuration);
+        HUDEffects.Instance.FadeInAndOut(popUp, popUpDuration, true);
+    }
+
+    public void TextPopUp(string text)
+    {
+        GameObject popUp = Instantiate(textPopUpInstance, popUpWindow);
+        popUp.GetComponentInChildren<TMP_Text>().text = text;
+
+        HUDEffects.Instance.FadeInAndOut(popUp, popUpDuration, true);
     }
 
     public void ChangeInteractionIcon(bool state)
