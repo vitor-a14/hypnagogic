@@ -56,7 +56,7 @@ public class InventoryManager : MonoBehaviour
     public void Remove(Item item) 
     {
         items.Remove(item);
-        HUDManager.Instance.TextPopUp(item.itemName + " was removed from the inventory");
+        HUDManager.Instance.TextPopUp(item.itemName + " removed from the inventory");
         AudioManager.Instance.PlayOneShot2D(removeItemAudio, gameObject, AudioManager.AudioType.SFX, 1);
     }
 
