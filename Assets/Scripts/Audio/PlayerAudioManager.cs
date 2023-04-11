@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct FootstepSet
+{
+    public string tag;
+    public AudioClip[] footstepAudios;
+}
+
 public class PlayerAudioManager : MonoBehaviour
 {
     public float footstepVolumeMultiplier = 0.02f;
     public float footstepFrequency;
-    public AudioClip[] footsteps;
+    public FootstepSet[] footsteps;
 
     float toggleSpeed = 3f;
     AudioSource audioSorce;
@@ -43,6 +50,13 @@ public class PlayerAudioManager : MonoBehaviour
 
     public void PlayFootStep()
     {
-        AudioManager.Instance.PlayOnAudioSorce(footsteps[Random.Range(0, footsteps.Length)], audioSorce, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
+        AudioClip[] footstepsSound = null;
+        foreach(FootstepSet footstep in footsteps)
+        {
+            if(footstep.tag == PlayerController.Instance.floorType)
+                footstepsSound = footstep.footstepAudios;
+        }
+
+        AudioManager.Instance.PlayOnAudioSorce(footstepsSound[Random.Range(0, footstepsSound.Length)], audioSorce, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
     }
 }

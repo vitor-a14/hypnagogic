@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Rigidbody rigid;
     [HideInInspector] public Vector3 processedDirection;
     [HideInInspector] public Vector2 input;
+    [HideInInspector] public string floorType;
     private Transform cam;
     private Vector3 direction;
     private Vector3 surfaceNormal;
@@ -155,6 +156,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.SphereCast(transform.position, 0.1f, -transform.up, out hit, groundDistanceCheck, walkableLayers))
         {
             surfaceNormal = hit.normal;
+            floorType = hit.transform.tag;
             onGround = true;
         } 
         else
