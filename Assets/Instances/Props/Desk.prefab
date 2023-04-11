@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6b8d0673d48c2640865788a3f165cbd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6b8d0673d48c2640865788a3f165cbd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6b8d0673d48c2640865788a3f165cbd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 27.09
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6b8d0673d48c2640865788a3f165cbd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d9f0bdbae71df2e43b23cac6ff5302da, type: 2}
     - target: {fileID: 919132149155446097, guid: d6b8d0673d48c2640865788a3f165cbd, type: 3}
       propertyPath: m_Name
-      value: desk Variant
+      value: Desk
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
