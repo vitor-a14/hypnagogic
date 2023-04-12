@@ -8,6 +8,8 @@ TagManager:
   - Concrete
   - Wood
   - Grass
+  - Door
+  - Item
   layers:
   - Default
   - TransparentFX

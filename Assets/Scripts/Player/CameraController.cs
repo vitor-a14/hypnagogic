@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
     {
         if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) 
         {
-            HUDManager.Instance.ChangeInteractionIcon(false);
+            HUDManager.Instance.ChangeInteractionIcon(false, "");
             return;
         }
 
@@ -44,11 +44,25 @@ public class CameraController : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, interactionDistance, interactableLayer)) 
         {
-            HUDManager.Instance.ChangeInteractionIcon(true);
+            string text;
+            switch(hit.transform.tag)
+            {
+            case "NPC":
+                text = "Talk";
+                break;
+            case "Item":
+                text = "Pick Item";
+                break;
+            default:
+                text = "Interact";
+                break;
+            }
+
+            HUDManager.Instance.ChangeInteractionIcon(true, text);
             return hit.transform;
         }
 
-        HUDManager.Instance.ChangeInteractionIcon(false);
+        HUDManager.Instance.ChangeInteractionIcon(false, "");
         return null;
     }
 
