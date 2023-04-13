@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ad1169b20cce9f4d9d42b571597d278, type: 3}
-  m_Name: generic_key
+  m_Name: cabin_key
   m_EditorClassIdentifier: 
   id: 0
-  itemName: generic.key
-  icon: {fileID: 21300000, guid: cc6512b51689f2f40b630cfe9ff46dbf, type: 3}
-  description: A generic key item, made long ago.
+  itemName: Cabin Key
+  icon: {fileID: 21300000, guid: 4f5ac8f371386234ba7ba86861119348, type: 3}
+  description: A old key to open the door for the cabin. The metal is rusted and
+    full of moss.
+  isEquippable: 0
+  equippableInstance: {fileID: 0}
