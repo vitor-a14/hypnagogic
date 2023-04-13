@@ -5,17 +5,17 @@ using UnityEngine;
 public class SkyboxScroll : MonoBehaviour
 {
     public float velocity;
-    private MeshRenderer renderer;
+    private MeshRenderer meshRenderer;
     private float offset;
 
     void Start()
     {
-        renderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>();
     }
 
     void FixedUpdate()
     {
         offset += velocity * Time.fixedDeltaTime;
-        renderer.material.SetTextureOffset ("_MainTex", new Vector2(offset,0));
+        meshRenderer.material.SetTextureOffset ("_MainTex", new Vector2(offset,0));
     }
 }

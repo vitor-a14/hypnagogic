@@ -174,7 +174,10 @@ public class PlayerController : MonoBehaviour
         isCrounching = !isCrounching;
 
         if(isCrounching)
+        {
             col.height = crouchingHeight;
+            isRunning = false;
+        }
         else
             col.height = standingHeight;
     }
