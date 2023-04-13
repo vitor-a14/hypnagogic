@@ -44,19 +44,14 @@ public class CameraController : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, interactionDistance, interactableLayer)) 
         {
-            string text;
-            switch(hit.transform.tag)
-            {
-            case "NPC":
+            string text = "Interact";
+
+            if (hit.transform.tag == "NPC")
                 text = "Talk";
-                break;
-            case "Item":
+            else if (hit.transform.tag == "Item")
                 text = "Pick Item";
-                break;
-            default:
+            else if (hit.transform.tag == "Interact")
                 text = "Interact";
-                break;
-            }
 
             HUDManager.Instance.ChangeInteractionIcon(true, text);
             return hit.transform;
