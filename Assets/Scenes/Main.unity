@@ -1744,7 +1744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &176278452
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1837,7 +1837,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 176278451}
   m_LocalRotation: {x: -0, y: -0.25018916, z: -0, w: 0.968197}
-  m_LocalPosition: {x: -4.0922422, y: 0.15, z: 14.386945}
+  m_LocalPosition: {x: -13.03, y: 12.06, z: -14.77}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6684,7 +6684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &852185037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11818,7 +11818,7 @@ MonoBehaviour:
   musicVolume: 1
   mainAudioThread: {fileID: 1463770354}
   secundaryAudioThread: {fileID: 1463770353}
-  transitionTime: 1.25
+  transitionTime: 2
   audioInstance: {fileID: 5358701293886720903, guid: 469886fd8a2616a4fb2b6222fe3e908d, type: 3}
 --- !u!4 &1463770349
 Transform:

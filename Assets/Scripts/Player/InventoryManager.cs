@@ -75,8 +75,8 @@ public class InventoryManager : MonoBehaviour
         itemName.text = "";
         itemDescription.text = "";
 
-        StartCoroutine(InventoryFadeDurationCoroutine(HUDEffects.fadeDuration)); //Fade duration delay
-        HUDEffects.Instance.FadeUI(inventoryComponent, onInventory); //Apply fade in/out animation in the inventyory HUD
+        inventoryComponent.SetActive(onInventory);
+        StartCoroutine(InventoryFadeDurationCoroutine(1)); //Fade duration delay
 
         PlayerController.Instance.UseMouse(onInventory);
 

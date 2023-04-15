@@ -34,7 +34,7 @@ public class HUDManager : MonoBehaviour
         popUp.GetComponentInChildren<TMP_Text>().text = item.itemName;
         popUp.transform.GetChild(1).GetComponent<Image>().sprite = item.icon;
 
-        HUDEffects.Instance.FadeInAndOut(popUp, popUpDuration, true);
+        Destroy(popUp, popUpDuration);
     }
 
     public void TextPopUp(string text)
@@ -42,7 +42,7 @@ public class HUDManager : MonoBehaviour
         GameObject popUp = Instantiate(textPopUpInstance, popUpWindow);
         popUp.GetComponentInChildren<TMP_Text>().text = text;
 
-        HUDEffects.Instance.FadeInAndOut(popUp, popUpDuration, true);
+        Destroy(popUp, popUpDuration);
     }
 
     public void ChangeInteractionIcon(bool state, string text)

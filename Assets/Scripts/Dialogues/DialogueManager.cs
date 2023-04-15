@@ -62,7 +62,7 @@ public class DialogueManager : MonoBehaviour
         PlayerController.Instance.UseMouse(true);
         currentStory = new Story(inkJson.text);
         dialogueIsPlaying = true;
-        HUDEffects.Instance.FadeUI(dialoguePanel, true);
+        dialoguePanel.SetActive(true);
 
         dialogueVariables.StartListening(currentStory);
 
@@ -116,7 +116,7 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueVariables.StopListening(currentStory);
         dialogueIsPlaying = false;
-        HUDEffects.Instance.FadeUI(dialoguePanel, false);
+        dialoguePanel.SetActive(false);
         PlayerController.Instance.UseMouse(false);
         dialogueText.text = "";
     }
