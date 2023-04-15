@@ -11,6 +11,7 @@ public struct FootstepSet
 
 public class PlayerAudioManager : MonoBehaviour
 {
+    [Header("Footsteps")]
     public float footstepVolumeMultiplier = 0.02f;
     public float footstepFrequency;
     public FootstepSet[] footsteps;

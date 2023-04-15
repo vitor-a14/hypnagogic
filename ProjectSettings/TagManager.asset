@@ -10,6 +10,7 @@ TagManager:
   - Grass
   - Door
   - Item
+  - EnviromentAudio
   layers:
   - Default
   - TransparentFX

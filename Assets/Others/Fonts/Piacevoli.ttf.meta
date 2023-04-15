@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 805127f3c52c94f499942cb4594d6988
+guid: b36f2fb60a262204f9471c6cfd036945
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Aref Ruqaa Ink
+  - Piacevoli
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
