@@ -38,7 +38,7 @@ public class InventoryManager : MonoBehaviour
     {
         if(currentEquipedItem != null)
         {
-            currentEquipedItem.transform.position = Vector3.Slerp(currentEquipedItem.transform.position, equippablePivot.position, 25 * Time.deltaTime);
+            currentEquipedItem.transform.position = Vector3.Slerp(currentEquipedItem.transform.position, equippablePivot.position, 25f * Time.deltaTime);
             var rot = Quaternion.LookRotation(equippablePivot.forward);
             rot.x = 0;
             rot.z = 0;
@@ -73,10 +73,10 @@ public class InventoryManager : MonoBehaviour
         else AudioManager.Instance.PlayOneShot2D(closeInventoryAudio, gameObject, AudioManager.AudioType.SFX, 1f);
 
         itemName.text = "";
-        itemDescription.text = "";
+        itemDescription.text = ""; 
 
         inventoryComponent.SetActive(onInventory);
-        StartCoroutine(InventoryFadeDurationCoroutine(1)); //Fade duration delay
+        StartCoroutine(InventoryFadeDurationCoroutine(0.5f)); //Fade duration delay
 
         PlayerController.Instance.UseMouse(onInventory);
 
