@@ -19,6 +19,12 @@ public class AudioManager : MonoBehaviour
     [Range(0, 1)] public float ambienceVolume;
     [Range(0, 1)] public float musicVolume;
 
+    [Header("Ambience Audio")]
+    public AudioSource mainAudioThread;
+    public AudioSource secundaryAudioThread;
+    public float transitionTime = 1.25f;
+    private AmbienceAudioAsset currentAmbienceSound;
+
     [Header("Others")]
     [SerializeField] private GameObject audioInstance;
 
@@ -98,5 +104,47 @@ public class AudioManager : MonoBehaviour
 
         audioSource.volume *= multiplier;
         audioSource.PlayOneShot(audio);
+    }
+
+    public void ChangeAmbienceSound(AmbienceAudioAsset audio)
+    {
+        if(currentAmbienceSound == audio) return;
+
+        AudioSource nowPlaying = mainAudioThread;
+        AudioSource target = secundaryAudioThread;
+
+        if(!nowPlaying.isPlaying)
+        {
+            nowPlaying = secundaryAudioThread;
+            target = mainAudioThread;
+        }
+
+        target.clip = audio.clip;
+        currentAmbienceSound = audio;
+        StopAllCoroutines();
+        StartCoroutine(MixAudiosCoroutine(nowPlaying, target));
+    }
+
+    private IEnumerator MixAudiosCoroutine(AudioSource nowPlaying, AudioSource target)
+    {
+        float percentage = 0;
+        float maxVolume = ambienceVolume * 0.2f;
+
+        target.UnPause();
+
+        if(target.isPlaying == false)
+            target.Play();
+
+        while(nowPlaying.volume > 0)
+        {
+            nowPlaying.volume = Mathf.Lerp(maxVolume, 0, percentage);
+            target.volume = Mathf.Lerp(0, maxVolume, percentage);
+            percentage += Time.deltaTime / transitionTime;
+            yield return null;
+        }
+
+        nowPlaying.Pause();
+
+        percentage = 0; 
     }
 }
