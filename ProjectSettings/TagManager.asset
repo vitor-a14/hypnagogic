@@ -11,6 +11,7 @@ TagManager:
   - Door
   - Item
   - EnviromentAudio
+  - Entity
   layers:
   - Default
   - TransparentFX

@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
     }
 
     [Header("Settings")]
-    [Range(0, 1)] public float masterVolume;
+    [Range(0, 2)] public float masterVolume;
     [Range(0, 1)] public float SFXVolume;
     [Range(0, 1)] public float ambienceVolume;
     [Range(0, 1)] public float musicVolume;

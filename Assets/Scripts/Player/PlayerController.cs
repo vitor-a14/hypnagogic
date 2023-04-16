@@ -121,6 +121,8 @@ public class PlayerController : MonoBehaviour
 
         isRunning = currentStamina > 0 && aboveToggleSpeed;
         staminarRecoveryTimer = 0;
+
+        if(CombatHandler.Instance.defending || CombatHandler.Instance.attacking) isRunning = false;
     }
 
     private void FixedUpdate() 
@@ -133,7 +135,7 @@ public class PlayerController : MonoBehaviour
                 processedDirection.x *= runMultiplier;
                 processedDirection.z *= runMultiplier;
             }
-            else if(isCrounching)
+            else if(isCrounching || CombatHandler.Instance.attacking || CombatHandler.Instance.defending)
             {
                 processedDirection.x *= crouchingMultiplier;
                 processedDirection.z *= crouchingMultiplier;

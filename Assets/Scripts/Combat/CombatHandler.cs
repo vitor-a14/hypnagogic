@@ -8,9 +8,10 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] private Animator anim;
     private int currentAttack = 1;
     private Inputs controls;
-    private bool attacking = false;
-    private bool defending = false;
+    [HideInInspector] public bool attacking = false;
+    [HideInInspector] public bool defending = false;
     private WeaponType currentWeapon;
+    private bool waiting;
 
     [Header("Audio")]
     [SerializeField] private AudioClip[] swordWoosh;
@@ -46,6 +47,8 @@ public class CombatHandler : MonoBehaviour
 
         StopAllCoroutines(); //Reset all coroutines to avoid bugs
 
+        PlayerController.Instance.isRunning = false;
+
         //Get the animation based on the current combo
         string animationName = currentWeapon.weaponType + "_Attack" + currentAttack;
         int animHash = Animator.StringToHash(animationName);
@@ -71,6 +74,8 @@ public class CombatHandler : MonoBehaviour
         if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) return;
 
         StopAllCoroutines(); //Reset all coroutines to avoid bugs
+
+        PlayerController.Instance.isRunning = false;
 
         anim.CrossFade(defendHash, 0, 0); //Play defending animation
 
