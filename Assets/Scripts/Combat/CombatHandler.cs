@@ -12,6 +12,11 @@ public class CombatHandler : MonoBehaviour
     private bool defending = false;
     private WeaponType currentWeapon;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] swordWoosh;
+    [SerializeField] private AudioClip defend;
+    [SerializeField] private AudioClip parry;
+
     //Animation hash's
     private static readonly int defendHash = Animator.StringToHash("Defend");
 
@@ -48,6 +53,9 @@ public class CombatHandler : MonoBehaviour
         StartCoroutine(AttackDuration(1 / currentWeapon.velocity)); //Attack cooldown
         StartCoroutine(RecoverDuration((1 / currentWeapon.velocity) + 0.3f)); //Animation duration cooldown
 
+        AudioClip swordWooshAudio = swordWoosh[Random.Range(0, swordWoosh.Length - 1)];
+        AudioManager.Instance.PlayOneShot3D(swordWooshAudio, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+
         //Combo nubmer handler
         currentAttack += 1;
         if(currentAttack > 2) currentAttack = 1;
@@ -61,6 +69,8 @@ public class CombatHandler : MonoBehaviour
         StopAllCoroutines(); //Reset all coroutines to avoid bugs
 
         anim.CrossFade(defendHash, 0, 0); //Play defending animation
+
+        AudioManager.Instance.PlayOneShot3D(defend, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
 
         //Handle the variables
         defending = true;
