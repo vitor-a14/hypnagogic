@@ -105,9 +105,11 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(audio);
     }
 
+    //The audio manager has two audio sources. One main thread and a secundary thread
+    //The function below will interpolate between the two to make a smooth audio transition
     public void ChangeAmbienceSound(AmbienceAudioAsset audio)
     {
-        if(currentAmbienceSound == audio) return;
+        if(currentAmbienceSound == audio) return; //Avoid a transition between identical audios
 
         AudioSource nowPlaying = mainAudioThread;
         AudioSource target = secundaryAudioThread;
@@ -120,10 +122,11 @@ public class AudioManager : MonoBehaviour
 
         target.clip = audio.clip;
         currentAmbienceSound = audio;
-        StopAllCoroutines();
+        StopAllCoroutines(); //This avoid bugs in the coroutines 
         StartCoroutine(MixAudiosCoroutine(nowPlaying, target));
     }
 
+    //User a coroutine to interpolate the ambience audios
     private IEnumerator MixAudiosCoroutine(AudioSource nowPlaying, AudioSource target)
     {
         float percentage = 0;

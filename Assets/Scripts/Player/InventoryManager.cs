@@ -42,7 +42,7 @@ public class InventoryManager : MonoBehaviour
             var rot = Quaternion.LookRotation(equippablePivot.forward);
             rot.x = 0;
             rot.z = 0;
-            currentEquipedItem.transform.rotation = rot;
+            currentEquipedItem.transform.rotation = equippablePivot.transform.rotation;
         }
     }
 
