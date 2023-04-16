@@ -55,6 +55,7 @@ public class AudioManager : MonoBehaviour
 
         audioSource.spatialBlend = 1;
         audioSource.volume *= multiplier;
+        audioSource.volume *= masterVolume;
         audioSource.PlayOneShot(audio);
         
         Destroy(audioSource, audio.length);
@@ -80,6 +81,7 @@ public class AudioManager : MonoBehaviour
 
         audioSource.spatialBlend = 0;
         audioSource.volume *= multiplier;
+        audioSource.volume *= masterVolume;
         audioSource.PlayOneShot(audio);
         
         Destroy(audioSource, audio.length);
@@ -102,6 +104,7 @@ public class AudioManager : MonoBehaviour
         }
 
         audioSource.volume *= multiplier;
+        audioSource.volume *= masterVolume;
         audioSource.PlayOneShot(audio);
     }
 
@@ -130,7 +133,7 @@ public class AudioManager : MonoBehaviour
     private IEnumerator MixAudiosCoroutine(AudioSource nowPlaying, AudioSource target)
     {
         float percentage = 0;
-        float maxVolume = ambienceVolume * 0.2f;
+        float maxVolume = ambienceVolume * 0.2f * masterVolume;
 
         target.UnPause();
 

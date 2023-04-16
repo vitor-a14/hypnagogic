@@ -50,14 +50,14 @@ public class InventoryManager : MonoBehaviour
     {
         items.Add(item);
         HUDManager.Instance.CollectedItemPopUp(item);
-        AudioManager.Instance.PlayOneShot2D(addItemAudio, gameObject, AudioManager.AudioType.SFX, 1);
+        AudioManager.Instance.PlayOneShot2D(addItemAudio, gameObject, AudioManager.AudioType.SFX, 0.5f);
     }
 
     public void Remove(Item item) 
     {
         items.Remove(item);
         HUDManager.Instance.TextPopUp(item.itemName + " removed from the inventory");
-        AudioManager.Instance.PlayOneShot2D(removeItemAudio, gameObject, AudioManager.AudioType.SFX, 1);
+        AudioManager.Instance.PlayOneShot2D(removeItemAudio, gameObject, AudioManager.AudioType.SFX, 0.5f);
     }
 
     //Open or close the inventory and update the HUD with the itens

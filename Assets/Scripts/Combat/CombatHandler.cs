@@ -42,6 +42,8 @@ public class CombatHandler : MonoBehaviour
         //Check if the player is holding a weapon, is not defending nor attacking
         if(attacking || currentWeapon == null || defending) return;
 
+        if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) return;
+
         StopAllCoroutines(); //Reset all coroutines to avoid bugs
 
         //Get the animation based on the current combo
@@ -65,6 +67,8 @@ public class CombatHandler : MonoBehaviour
     {
         //Check if the player is holding and a weapon and it's not already defending
         if(currentWeapon == null || defending) return; 
+
+        if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) return;
 
         StopAllCoroutines(); //Reset all coroutines to avoid bugs
 
