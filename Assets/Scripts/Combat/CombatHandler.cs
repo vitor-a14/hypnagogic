@@ -17,6 +17,7 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] private AudioClip[] swordWoosh;
     [SerializeField] private AudioClip defend;
     [SerializeField] private AudioClip parry;
+    [SerializeField] private AudioClip[] swordHitDefend;
 
     //Animation hash's
     private static readonly int defendHash = Animator.StringToHash("Defend");
@@ -85,6 +86,23 @@ public class CombatHandler : MonoBehaviour
         defending = true;
         attacking = false;
         anim.SetBool("Recover", false);
+    }
+
+    //When the enemy lands a hit, call this function to check if the player will be damaged
+    public void TakeHit(int damage)
+    {
+        if(defending)
+        {
+            AudioManager.Instance.PlayOneShot3D(swordHitDefend[Random.Range(0, swordHitDefend.Length - 1)], currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+            return;
+        }
+        else
+        {
+            Debug.Log("hitted!");
+            //take away hp
+            //hit audio
+            return;
+        }
     }
 
     private void StopDefending()
