@@ -1,11 +1,103 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public class AttackPattern
+{
+    public string attackAnimationName;
+    public AudioClip attackAudio;
+}
 
 public class Entity : MonoBehaviour
 {
+    [Header("Attributes")]
+    public bool active = false;
+    public bool attackPlayer;
     public int life;
-    public bool alive = true;
+    public int damage;
+    public float attackRange;
+    public float movementSpeed;
+    public float attackCooldown;
+    public AttackPattern[] attacks;
+
+    [Header("Components")]
+    [SerializeField] protected Animator anim;
+    [SerializeField] protected Rigidbody rigid;
+    [SerializeField] protected CollisionRegister hitCollider;
+
+    //States
+    protected bool goingBackToSpawn = false;
+    protected bool offensive = false; 
+    protected bool inAttackCooldown = false;
+    protected bool stunned = false; 
+    protected bool playerInReach = false; 
+    protected bool inSpawnReach = true;
+    protected bool isMoving = true;
+    protected bool attacking = false;
+
+    //Logic
+    protected Transform player;
+    private Vector3 spawnPoint;
+    private float offensiveDistance = 15f;
+    private float spawnPointDistanceLimit = 20f;
+    private bool attackInCooldown = false;
+
+    //Basic animations
+    protected int idleHash;
+    protected int moveHash;
+    protected int deathHash;
+    protected int parryHash;
+
+    //Basic audio
+    [SerializeField] protected AudioClip deathSound;
+    [SerializeField] protected AudioSource movementSoundSource;
+
+    private void Awake() 
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        spawnPoint = transform.position;
+    }
+
+    private void Update() 
+    {
+        float distanceFromPlayer = Vector3.Distance(player.position, transform.position);
+        float distanceFromSpawnpoint = Vector3.Distance(transform.position, spawnPoint);
+
+        playerInReach = distanceFromPlayer < offensiveDistance;
+        inSpawnReach = distanceFromSpawnpoint < spawnPointDistanceLimit;
+        isMoving = false;
+
+        if(!active) return;
+
+        if(attacking)
+        {
+            if(hitCollider.playerCollided)
+            {
+                hitCollider.playerCollided = false;
+                hitCollider.enabled = false;
+
+                if(CombatHandler.Instance.TakeHit(damage)) 
+                    StartCoroutine(Stun());
+            }
+
+            return;
+        }
+
+        if(stunned || attacking) return;
+
+        if (playerInReach && inSpawnReach)
+            offensive = true;
+        else 
+            offensive = false;
+
+        if(offensive && !goingBackToSpawn)
+        {
+            bool playerInRange = FollowTarget(player.position);
+            if(playerInRange && attackPlayer) Attack();
+        }
+        else
+            goingBackToSpawn = !FollowTarget(spawnPoint);
+    }
 
     public void TakeHit(int damage)
     {
@@ -21,9 +113,83 @@ public class Entity : MonoBehaviour
         Destroy(GetComponent<Animator>(), 5);
         Destroy(this, 1);
         Destroy(gameObject, 10);
-        alive = false;
+        active = false;
+
+        anim.CrossFade(deathHash, 0, 0);
+        AudioManager.Instance.PlayOneShot3D(deathSound, gameObject, AudioManager.AudioType.SFX, 1);
 
         foreach(Collider col in GetComponentsInChildren<Collider>())
             Destroy(col);
+    }
+
+    public virtual void Attack()
+    {
+        if(attackInCooldown) return;
+
+        hitCollider.enabled = true;
+        LookAtTarget(player.position);
+        StartCoroutine(AttackLogic());
+    }
+
+    private IEnumerator AttackLogic()
+    {
+        int choosenAttack = Random.Range(0, attacks.Length);
+        int animationHash = Animator.StringToHash(attacks[choosenAttack].attackAnimationName);
+
+        AudioManager.Instance.PlayOneShot3D(attacks[choosenAttack].attackAudio, gameObject, AudioManager.AudioType.SFX, 1);
+        anim.CrossFade(animationHash, 0, 0);
+        attacking = true;
+
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + 0.5f);
+
+        StartCoroutine(AttackCooldown());
+        attacking = false;
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        attackInCooldown = true; 
+        yield return new WaitForSeconds(attackCooldown);
+        attackInCooldown = false;
+    }
+
+    protected bool FollowTarget(Vector3 targetPos)
+    {
+        LookAtTarget(targetPos);
+        float distance = Vector3.Distance(targetPos, transform.position);
+        float distanceToStop = 5f;
+
+        if(distance < distanceToStop)
+        {
+            anim.CrossFade(idleHash, 0, 0);
+            movementSoundSource.Pause();
+            isMoving = false;
+            return true;
+        }
+        else
+        {
+            anim.CrossFade(moveHash, 0, 0);
+            if(!movementSoundSource.isPlaying) movementSoundSource.Play();
+            movementSoundSource.UnPause();
+            rigid.velocity = transform.forward * movementSpeed + transform.up * rigid.velocity.y;
+            isMoving = true;
+            return false;
+        }
+    }
+
+    protected IEnumerator Stun()
+    {
+        anim.CrossFade(parryHash, 0, 0);
+        stunned = true;
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
+        stunned = false;
+    }
+
+    protected void LookAtTarget(Vector3 targetPos)
+    {
+        var lookPos = targetPos - transform.position;
+        lookPos.y = 0;
+        var rotation = Quaternion.LookRotation(lookPos);
+        transform.rotation = rotation;
     }
 }

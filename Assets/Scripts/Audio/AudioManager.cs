@@ -105,7 +105,8 @@ public class AudioManager : MonoBehaviour
 
         audioSource.volume *= multiplier;
         audioSource.volume *= masterVolume;
-        audioSource.PlayOneShot(audio);
+        audioSource.clip = audio;
+        audioSource.Play();
     }
 
     //The audio manager has two audio sources. One main thread and a secundary thread
