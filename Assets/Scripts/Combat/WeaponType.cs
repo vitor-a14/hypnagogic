@@ -7,11 +7,13 @@ public class WeaponType : MonoBehaviour
     public float velocity;
     public Entity target;
     public AudioClip hitAudio;
+    public AudioClip drawWeaponAudio;
 
     //Send the weapon statistics for the combat handler class, this class is stored in the pivot in the camera
     void Start()
     {
         CombatHandler.Instance.SetWeapon(this);
+        AudioManager.Instance.PlayOneShot2D(drawWeaponAudio, gameObject, AudioManager.AudioType.SFX, 1);
     }
 
     private void OnTriggerEnter(Collider other) 
