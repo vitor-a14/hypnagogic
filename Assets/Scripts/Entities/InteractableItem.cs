@@ -1,3 +1,5 @@
+using System.Collections;
+
 public class InteractableItem : Interactable
 {
     public Item item;

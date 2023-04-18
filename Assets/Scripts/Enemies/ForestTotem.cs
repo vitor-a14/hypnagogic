@@ -70,7 +70,7 @@ public class ForestTotem : Entity
             if(offensive)
                 FollowPlayer();
             else 
-                DefendNest();
+                BackToSpawnPoint();
         }
         else
             TryToAwake();
@@ -97,7 +97,7 @@ public class ForestTotem : Entity
         if(distance < attackRange) Attack();
     }
 
-    private void DefendNest()
+    private void BackToSpawnPoint()
     {
         bool inRange = FollowTarget(spawnPoint, 2f);
 
