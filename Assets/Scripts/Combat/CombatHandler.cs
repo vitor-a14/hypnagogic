@@ -19,8 +19,11 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] private AudioClip parry;
     [SerializeField] private AudioClip[] swordHitDefend;
 
+    private float timeDefending;
+
     //Animation hash's
     private static readonly int defendHash = Animator.StringToHash("Defend");
+    private static readonly int defenseReactHash = Animator.StringToHash("Defense React");
 
     private void Awake() 
     {
@@ -37,6 +40,12 @@ public class CombatHandler : MonoBehaviour
         controls.Player.Attack.performed += ctx => Attack();
         controls.Player.Defend.performed += ctx => Defend();
         controls.Player.Defend.canceled += ctx => StopDefending();
+    }
+
+    private void Update() 
+    {
+        if(defending)
+            timeDefending += Time.deltaTime;
     }
 
     private void Attack()
@@ -75,33 +84,47 @@ public class CombatHandler : MonoBehaviour
         if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory) return;
 
         StopAllCoroutines(); //Reset all coroutines to avoid bugs
-
         PlayerController.Instance.isRunning = false;
 
-        anim.CrossFade(defendHash, 0, 0); //Play defending animation
+        if(anim.GetCurrentAnimatorClipInfo(0).GetHashCode() != defenseReactHash)
+            anim.CrossFade(defendHash, 0, 0); //Play defending animation
 
         AudioManager.Instance.PlayOneShot3D(defend, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
 
         //Handle the variables
         defending = true;
         attacking = false;
+        timeDefending = 0;
         anim.SetBool("Recover", false);
     }
 
     //When the enemy lands a hit, call this function to check if the player will be damaged
-    public void TakeHit(int damage)
+    public bool TakeHit(int damage)
     {
         if(defending)
         {
-            AudioManager.Instance.PlayOneShot3D(swordHitDefend[Random.Range(0, swordHitDefend.Length - 1)], currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
-            return;
+            anim.CrossFade(defenseReactHash, 0, 0);
+
+            //Normal defense
+            if(timeDefending > 0.1f)
+            {
+                AudioManager.Instance.PlayOneShot3D(swordHitDefend[Random.Range(0, swordHitDefend.Length - 1)], currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+                return false;
+            }
+            else //PARRY
+            {
+                Effects.Instance.FreezeFrame();
+                Effects.Instance.ScreenShake();
+                AudioManager.Instance.PlayOneShot3D(parry, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+                return true;
+            }
         }
         else
         {
             Debug.Log("hitted!");
             //take away hp
             //hit audio
-            return;
+            return false;
         }
     }
 

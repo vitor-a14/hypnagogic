@@ -24,6 +24,7 @@ public class ForestTotem : Entity
     private bool offensive = false;
     private bool attacking = false;
     private bool inAttackCooldown = false;
+    private bool stunned = false;
 
     private Transform player;
     private Vector3 spawnPoint;
@@ -56,11 +57,15 @@ public class ForestTotem : Entity
                 {
                     sword.playerCollided = false;
                     sword.enabled = false;
-                    CombatHandler.Instance.TakeHit(damage);
+
+                    if(CombatHandler.Instance.TakeHit(damage))
+                        StartCoroutine(Stun());
                 }
 
                 return;
             }
+
+            if(stunned) return;
 
             if(offensive)
                 FollowPlayer();
@@ -161,5 +166,13 @@ public class ForestTotem : Entity
         yield return new WaitForSeconds(attackCooldown);
         sword.enabled = true;
         inAttackCooldown = false;
+    }
+
+    private IEnumerator Stun()
+    {
+        anim.CrossFade(parryHash, 0, 0);
+        stunned = true;
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
+        stunned = false;
     }
 }
