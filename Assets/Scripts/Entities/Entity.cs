@@ -12,10 +12,7 @@ public class Entity : MonoBehaviour
         life -= damage;
 
         if(life <= 0)
-        {
-            alive = false;
             Die();
-        }
     }
 
     public virtual void Die()
@@ -24,6 +21,7 @@ public class Entity : MonoBehaviour
         Destroy(GetComponent<Animator>(), 5);
         Destroy(this, 1);
         Destroy(gameObject, 10);
+        alive = false;
 
         foreach(Collider col in GetComponentsInChildren<Collider>())
             Destroy(col);
