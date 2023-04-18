@@ -18,11 +18,10 @@ public class WeaponType : MonoBehaviour
     {
         if(other.tag == "Entity" && CombatHandler.Instance.attacking)
         {
-            Debug.Log("hit");
-            Effects.Instance.FreezeFrame();
             Effects.Instance.ScreenShake();
             AudioManager.Instance.PlayOneShot3D(hitAudio, gameObject, AudioManager.AudioType.SFX, 1);
-            target = other.GetComponent<Entity>();
+            target = other.transform.root.GetComponent<Entity>();
+            target.TakeHit(damage);
         }
     }
 }

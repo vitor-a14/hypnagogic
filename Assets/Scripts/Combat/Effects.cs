@@ -38,14 +38,14 @@ public class Effects : MonoBehaviour
             yield return null;
         }
 
-        cam.position = startPos;
+        cam.localPosition = Vector3.zero;
     }
 
     public void FreezeFrame()
     {
         if(waiting) return;
 
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0.1f;
         StartCoroutine(Freeze());
     }
 

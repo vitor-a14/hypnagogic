@@ -5,14 +5,27 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public int life;
-    
-    void Start()
+    public bool alive = true;
+
+    public void TakeHit(int damage)
     {
-        
+        life -= damage;
+
+        if(life <= 0)
+        {
+            alive = false;
+            Die();
+        }
     }
 
-    void Update()
+    public virtual void Die()
     {
-        
+        Destroy(GetComponent<Rigidbody>());
+        Destroy(GetComponent<Animator>(), 5);
+        Destroy(this, 1);
+        Destroy(gameObject, 10);
+
+        foreach(Collider col in GetComponentsInChildren<Collider>())
+            Destroy(col);
     }
 }

@@ -18,6 +18,7 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] private AudioClip defend;
     [SerializeField] private AudioClip parry;
     [SerializeField] private AudioClip[] swordHitDefend;
+    [SerializeField] private AudioClip[] takenHit;
 
     private float timeDefending;
 
@@ -124,6 +125,7 @@ public class CombatHandler : MonoBehaviour
             Debug.Log("hitted!");
             //take away hp
             //hit audio
+            AudioManager.Instance.PlayOneShot2D(takenHit[Random.Range(0, takenHit.Length - 1)], gameObject, AudioManager.AudioType.SFX, 1);
             return false;
         }
     }

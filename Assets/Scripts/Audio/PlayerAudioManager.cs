@@ -57,6 +57,8 @@ public class PlayerAudioManager : MonoBehaviour
                 footstepsSound = footstep.footstepAudios;
         }
 
-        AudioManager.Instance.PlayOnAudioSorce(footstepsSound[Random.Range(0, footstepsSound.Length)], audioSorce, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
+        if(footstepsSound == null) return;
+        
+        AudioManager.Instance.PlayOnAudioSorce(footstepsSound[Random.Range(0, footstepsSound.Length - 1)], audioSorce, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
     }
 }
