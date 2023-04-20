@@ -43,4 +43,10 @@ public class ForestTotem : Entity
         rigid.useGravity = true;
         active = true;
     }
+
+    public override void Die()
+    {
+        base.Die();
+        passiveSoundSource.Stop();
+    }
 }

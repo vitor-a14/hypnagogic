@@ -181,7 +181,7 @@ public class Entity : MonoBehaviour
     {
         anim.CrossFade(parryHash, 0, 0);
         stunned = true;
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length * 2);
         stunned = false;
     }
 

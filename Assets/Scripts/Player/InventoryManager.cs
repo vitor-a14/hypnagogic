@@ -145,13 +145,15 @@ public class InventoryManager : MonoBehaviour
             itemName.text = "";
             itemDescription.text = "";
             UpdateItemList();
+            HUDManager.Instance.SetPlayerHUDCurrentWeapon(null);
             return;
         }
 
         currentEquipedItem = Instantiate(item.equippableInstance, equippablePivot);
         currentEquipedItem.name = item.itemName;
         currentEquipedItem.transform.SetParent(null);
-
+        
+        HUDManager.Instance.SetPlayerHUDCurrentWeapon(item);
         UpdateItemList();
     }
 

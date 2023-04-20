@@ -123,8 +123,7 @@ public class CombatHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("hitted!");
-            //take away hp
+            PlayerStatus.Instance.DecreaseCurrentLife(damage);
             HUDManager.Instance.FadeInAndOut(damagedUIEffect, 0.3f, 15f);
             AudioManager.Instance.PlayOneShot2D(takenHit[Random.Range(0, takenHit.Length - 1)], gameObject, AudioManager.AudioType.SFX, 1);
             return false;

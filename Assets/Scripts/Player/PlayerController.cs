@@ -13,13 +13,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool onGround;
 
-    //Runnign and stamina
-    [Header("Running and Stamina")]
     [Range(1, 2)] public float runMultiplier;
-    public float stamina; //seconds that the player can run
-    public float staminaRecovery;
     [HideInInspector] public bool aboveToggleSpeed;
-    private float currentStamina, staminarRecoveryTimer;
     private float toggleSpeed = 1.5f;
 
     //Crouching
@@ -50,7 +45,6 @@ public class PlayerController : MonoBehaviour
         controls = new Inputs();
         controls.Enable();
 
-        currentStamina = stamina;
         rigid = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
         col = GetComponent<CapsuleCollider>();
@@ -66,7 +60,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        StaminaManagement();
         CheckGround(); 
 
         //Input process
@@ -94,22 +87,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void StaminaManagement()
-    {
-        if(currentStamina > 0 && isRunning)
-            currentStamina -= Time.deltaTime;
-        else if(currentStamina <= 0)
-            isRunning = false;
-
-        if(staminarRecoveryTimer >= staminaRecovery)
-        {
-            if(currentStamina < stamina)
-                currentStamina += 2 * Time.deltaTime;
-        }
-        else if(!isRunning)
-            staminarRecoveryTimer += Time.deltaTime;
-    }
-
     private void TriggerRun()
     {
         //If the player is crouching, try to stand up
@@ -119,8 +96,8 @@ public class PlayerController : MonoBehaviour
             if(isCrounching) return; //If the player continues crouching, do not start the run logic
         }
 
-        isRunning = currentStamina > 0 && aboveToggleSpeed;
-        staminarRecoveryTimer = 0;
+        isRunning = PlayerStatus.Instance.currentStamina > 0 && aboveToggleSpeed;
+        PlayerStatus.Instance.staminaRecoveryTimer = 0;
 
         if(CombatHandler.Instance.defending || CombatHandler.Instance.attacking) isRunning = false;
     }

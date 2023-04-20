@@ -17,6 +17,14 @@ public class HUDManager : MonoBehaviour
     public GameObject interactionIcon; //A HUD element that output for the player if a interactable is in reach
     private TMP_Text interactionText;
 
+    [Header("Player HUD")]
+    [SerializeField] private CanvasGroup playerHUD;
+    public Slider healthBarSlider; //the max value is changed in the PlayerStatus class everytime the max life changes
+
+    [SerializeField] private CanvasGroup playerHUDcurrentWeapon;
+    [SerializeField] private Image playerHUDcurrentWeaponIcon;
+    [SerializeField] private TMP_Text playerHUDcurrentWeaponName;
+
     void Start()
     {
         if(Instance == null)
@@ -25,6 +33,15 @@ public class HUDManager : MonoBehaviour
             Debug.Log("Instance is already set, something is wrong");
 
         interactionText = interactionIcon.GetComponent<TMP_Text>();
+        healthBarSlider.maxValue = PlayerStatus.Instance.maxLife; //This updates in the PlayerStatus class
+
+        FadeIn(playerHUD.gameObject, 5);
+    }
+
+    //Player UI Logic
+    private void LateUpdate() 
+    {
+        healthBarSlider.value = PlayerStatus.Instance.currentLife;
     }
 
     public void CollectedItemPopUp(Item item)
@@ -35,6 +52,19 @@ public class HUDManager : MonoBehaviour
 
         FadeInAndOut(popUp, popUpDuration, 15);
         Destroy(popUp, popUpDuration * 2);
+    }
+
+    public void SetPlayerHUDCurrentWeapon(Item item)
+    {
+        if(item == null)
+        {
+            playerHUDcurrentWeapon.alpha = 0;
+            return;
+        } 
+        else playerHUDcurrentWeapon.alpha = 1;
+
+        playerHUDcurrentWeaponIcon.sprite = item.icon;
+        playerHUDcurrentWeaponName.text = item.name;
     }
 
     public void TextPopUp(string text)
