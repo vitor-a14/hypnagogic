@@ -20,7 +20,7 @@ public class WeaponType : MonoBehaviour
     {
         if(other.tag == "Entity" && CombatHandler.Instance.attacking)
         {
-            Effects.Instance.ScreenShake();
+            //Effects.Instance.ScreenShake();
             AudioManager.Instance.PlayOneShot3D(hitAudio, gameObject, AudioManager.AudioType.SFX, 1);
             target = other.transform.root.GetComponent<Entity>();
             target.TakeHit(damage);

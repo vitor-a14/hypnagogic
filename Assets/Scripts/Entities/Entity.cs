@@ -52,10 +52,53 @@ public class Entity : MonoBehaviour
     [SerializeField] protected AudioClip deathSound;
     [SerializeField] protected AudioSource movementSoundSource;
 
+    //Renderer and materials
+    protected Renderer[] entityRenderers;
+
     private void Awake() 
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        entityRenderers = GetComponentsInChildren<Renderer>();
         spawnPoint = transform.position;
+    }
+
+    private IEnumerator DamageEffectCoroutine()
+    {
+        float duration = 0.05f;
+        Color damagedColor = new Color(1f, 0.7f, 0.7f);
+
+        foreach (Renderer childRenderer in entityRenderers)
+            childRenderer.material.color = damagedColor;
+
+        yield return new WaitForSeconds(duration);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            foreach (Renderer childRenderer in entityRenderers)
+                childRenderer.material.color = Color.Lerp(damagedColor, Color.white, elapsedTime / duration);
+            yield return null;
+        }
+    }
+
+    private IEnumerator FadeAwayCoroutine()
+    {
+        float duration = 5f;
+        float elapsedTime = 0f;
+        Color fadeAwayColor = new Color(1, 1, 1, 0);
+
+        foreach (Renderer childRenderer in entityRenderers)
+                childRenderer.material.shader = Shader.Find("PSX/Vertex Lit Transparent");
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            foreach (Renderer childRenderer in entityRenderers)
+                childRenderer.material.color = Color.Lerp(Color.white, fadeAwayColor, elapsedTime / duration);
+
+            yield return null;
+        }
     }
 
     private void Update() 
@@ -102,6 +145,7 @@ public class Entity : MonoBehaviour
     public void TakeHit(int damage)
     {
         life -= damage;
+        StartCoroutine(DamageEffectCoroutine());
 
         if(life <= 0)
             Die();
@@ -109,15 +153,18 @@ public class Entity : MonoBehaviour
 
     public virtual void Die()
     {
+        StopAllCoroutines();
+
         Destroy(GetComponent<Rigidbody>());
         Destroy(GetComponent<Animator>(), 5);
-        Destroy(this, 1);
         Destroy(gameObject, 10);
-        active = false;
 
         anim.CrossFade(deathHash, 0, 0);
         AudioManager.Instance.PlayOneShot3D(deathSound, gameObject, AudioManager.AudioType.SFX, 1);
+        active = false;
+        life = 0;
 
+        StartCoroutine(FadeAwayCoroutine());
         foreach(Collider col in GetComponentsInChildren<Collider>())
             Destroy(col);
     }

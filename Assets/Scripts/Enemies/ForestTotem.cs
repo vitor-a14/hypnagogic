@@ -39,8 +39,13 @@ public class ForestTotem : Entity
         }
 
         yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length * 4);
-        rigid.isKinematic = false;
-        rigid.useGravity = true;
+
+        if(rigid != null) 
+        {
+            rigid.isKinematic = false;
+            rigid.useGravity = true;
+        }
+
         active = true;
     }
 
