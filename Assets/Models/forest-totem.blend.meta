@@ -42,7 +42,7 @@ ModelImporter:
       takeName: Scene
       internalID: -623603649343465320
       firstFrame: 1
-      lastFrame: 65
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -70,7 +70,7 @@ ModelImporter:
       name: Move
       takeName: Scene
       internalID: -8800838248204228948
-      firstFrame: 70
+      firstFrame: 65
       lastFrame: 85
       wrapMode: 0
       orientationOffsetY: 0
