@@ -15,6 +15,7 @@ public class PlayerStatus : MonoBehaviour
     public float currentStamina;
     public int staminaRecovery;
     [HideInInspector] public float staminaRecoveryTimer;
+    [SerializeField] private GameObject damagedUIEffect;
 
     void Awake()
     {
@@ -52,6 +53,7 @@ public class PlayerStatus : MonoBehaviour
     {
         currentLife -= amount;
         currentLife = Mathf.Clamp(currentLife, 0, maxLife);
+        HUDManager.Instance.FadeInAndOut(damagedUIEffect, 0.3f, 15f);
     }
 
     public void IncreaseCurrentLife(int amount)

@@ -159,6 +159,9 @@ public class Entity : MonoBehaviour
         Destroy(GetComponent<Animator>(), 5);
         Destroy(gameObject, 10);
 
+        Effects.Instance.FreezeFrame();
+        Effects.Instance.ScreenShake();
+
         anim.CrossFade(deathHash, 0, 0);
         AudioManager.Instance.PlayOneShot3D(deathSound, gameObject, AudioManager.AudioType.SFX, 1);
         active = false;

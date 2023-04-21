@@ -22,12 +22,6 @@ What do you seek in this empty lands? #speaker:Alyzar
     I am just a observer in this chaotic hell.
     -> main
     
-    * [None of your business!]
-    ...
-    ......
-    Leave this lands.
-    -> main
-    
     * ->
     Seems like we don't have anything more to say...
     So, this is a good bye.

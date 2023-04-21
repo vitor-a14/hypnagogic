@@ -4,6 +4,7 @@ using UnityEngine;
 public class CombatHandler : MonoBehaviour
 {
     public static CombatHandler Instance;
+    public float damageReductionInDefense;
 
     [SerializeField] private Animator anim;
     private int currentAttack = 1;
@@ -19,7 +20,6 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] private AudioClip parry;
     [SerializeField] private AudioClip[] swordHitDefend;
     [SerializeField] private AudioClip[] takenHit;
-    [SerializeField] private GameObject damagedUIEffect;
 
     private float timeDefending;
 
@@ -111,9 +111,10 @@ public class CombatHandler : MonoBehaviour
             if(timeDefending > 0.1f)
             {
                 AudioManager.Instance.PlayOneShot3D(swordHitDefend[Random.Range(0, swordHitDefend.Length - 1)], currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+                PlayerStatus.Instance.DecreaseCurrentLife((int)(damage * damageReductionInDefense));
                 return false;
             }
-            else //PARRY
+            else //Perfect Defense (PARRY)
             {
                 Effects.Instance.FreezeFrame();
                 Effects.Instance.ScreenShake();
@@ -121,11 +122,14 @@ public class CombatHandler : MonoBehaviour
                 return true;
             }
         }
-        else
+        else //Failed Defense (Player was attacked)
         {
             PlayerStatus.Instance.DecreaseCurrentLife(damage);
-            HUDManager.Instance.FadeInAndOut(damagedUIEffect, 0.3f, 15f);
             AudioManager.Instance.PlayOneShot2D(takenHit[Random.Range(0, takenHit.Length - 1)], gameObject, AudioManager.AudioType.SFX, 1);
+
+            if(InventoryManager.Instance.onInventory) InventoryManager.Instance.ListItems();
+            if(DialogueManager.Instance.dialogueIsPlaying) DialogueManager.Instance.EndDialogue();
+
             return false;
         }
     }
