@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour
@@ -17,6 +17,19 @@ public class PlayerStatus : MonoBehaviour
     [HideInInspector] public float staminaRecoveryTimer;
     [SerializeField] private GameObject damagedUIEffect;
 
+    [Header("Consumables")]
+    public int soulPotions;
+    public int goldenSeeds;
+    [SerializeField] private int healthRecoverAmount;
+    [SerializeField] private float consumableCooldown;
+    [SerializeField] private int maxSoulPotionsAllowed;
+    [SerializeField] private int maxGoldenSeedsAllowed;
+
+    [Header("UI and Audio")]
+    [SerializeField] private AudioClip consumeSoulPotionAudio;
+    [SerializeField] private TMP_Text soulPotionsText, goldenSeedsText;
+    private bool consumableInCooldown = false;
+
     void Awake()
     {
         if(Instance == null)
@@ -24,13 +37,38 @@ public class PlayerStatus : MonoBehaviour
         else
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
 
-        currentLife = maxLife;
         currentStamina = maxStamina;
+    }
+
+    private void Start() 
+    {
+        goldenSeedsText.text = goldenSeeds.ToString();
+        soulPotionsText.text = soulPotions.ToString();
     }
 
     void LateUpdate()
     {
         StaminaManagement();
+    }
+
+    public void ConsumeSoulPotion()
+    {
+        if(soulPotions == 0 || consumableInCooldown || currentLife == maxLife) return;
+
+        soulPotions -= 1;
+        soulPotions = Mathf.Clamp(soulPotions, 0, maxSoulPotionsAllowed);
+        AudioManager.Instance.PlayOneShot2D(consumeSoulPotionAudio, gameObject, AudioManager.AudioType.SFX, 1);
+        soulPotionsText.text = soulPotions.ToString();
+        IncreaseCurrentLife(healthRecoverAmount);
+
+        StartCoroutine(StartConsumableCooldown());
+    }
+
+    private IEnumerator StartConsumableCooldown()
+    {
+        consumableInCooldown = true;
+        yield return new WaitForSeconds(consumableCooldown);
+        consumableInCooldown = false;
     }
 
     private void StaminaManagement()

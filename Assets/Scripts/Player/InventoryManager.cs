@@ -8,19 +8,22 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
     public List<Item> items = new List<Item>();
+
+    [Header("HUD Elements")]
     public GameObject inventoryItem; //Item HUD instance
     public Transform contentGrid; //Grid where the items will be displayed
     public TMP_Text itemName, itemDescription;
     public GameObject inventoryComponent; //All the inventory HUD to show or hide
-    public bool onInventory = false;
+    [HideInInspector] public bool onInventory = false;
 
     public Transform equippablePivot;
     private GameObject currentEquipedItem;
-
     //Is this boolean is true, it means that the fade animation of the inventory is running. The player only can move when this is finished
     private bool inventoryTransition = false; 
 
-    [SerializeField] private AudioClip addItemAudio, removeItemAudio;
+    [Header("Audio")]
+    [SerializeField] private AudioClip addItemAudio;
+    [SerializeField] private AudioClip removeItemAudio;
     [SerializeField] private AudioClip openInventoryAudio, closeInventoryAudio;
     [SerializeField] private AudioClip showItemAudio;
     
@@ -30,8 +33,6 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
         else
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
-
-        PlayerController.Instance.controls.Player.Inventory.performed += ctx => ListItems();
     }
 
     private void LateUpdate() 

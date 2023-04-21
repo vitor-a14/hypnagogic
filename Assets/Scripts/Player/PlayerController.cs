@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
         controls.Player.Run.performed += ctx => TriggerRun();
         controls.Player.Crouch.performed += ctx => Crouch();
+        controls.Player.UsePotion.performed += ctx => PlayerStatus.Instance.ConsumeSoulPotion();
+        controls.Player.Inventory.performed += ctx => InventoryManager.Instance.ListItems();
 
         UseMouse(false);
     }
