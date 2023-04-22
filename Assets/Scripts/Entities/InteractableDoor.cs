@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class InteractableDoor : Interactable
@@ -14,10 +15,27 @@ public class InteractableDoor : Interactable
     [SerializeField] private AudioClip doorOpenAudio, doorCloseAudio, doorLockedAudio;
     [SerializeField] private AudioSource audioSource;
 
-    private void Start() {
+    private void OnEnable() {
+        StartCoroutine(LoadInfo());
+
         doorCollider = GetComponent<BoxCollider>();
         openDoorRotation = transform.rotation * Quaternion.Euler(0f, -90f, 0f);
         closedDoorRotation = transform.rotation;
+    }
+
+    private IEnumerator LoadInfo()
+    {
+        yield return new WaitForEndOfFrame();
+        string[] loadedUnlockedDoors = SaveSystem.Instance.gameData.unlockedDoors;
+        foreach(string unlockedDoorName in loadedUnlockedDoors)
+        {
+            if(unlockedDoorName == transform.name)
+            {
+                locked = false;
+                ChangeDoorState();
+                break;
+            }
+        }
     }
 
     public override void Interact()

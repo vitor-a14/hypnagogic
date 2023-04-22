@@ -25,7 +25,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private Image playerHUDcurrentWeaponIcon;
     [SerializeField] private TMP_Text playerHUDcurrentWeaponName;
 
-    void Start()
+    void Awake()
     {
         if(Instance == null)
             Instance = this;

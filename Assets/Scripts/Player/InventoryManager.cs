@@ -17,6 +17,7 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public bool onInventory = false;
 
     public Transform equippablePivot;
+    [HideInInspector] public Item equipedItemData;
     private GameObject currentEquipedItem;
     //Is this boolean is true, it means that the fade animation of the inventory is running. The player only can move when this is finished
     private bool inventoryTransition = false; 
@@ -135,7 +136,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void EquipItem(Item item)
+    public void EquipItem(Item item)
     {
         if(!item.isEquippable) return;
 
@@ -147,6 +148,7 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(currentEquipedItem);
             currentEquipedItem = null;
+            equipedItemData = null;
             itemName.text = "";
             itemDescription.text = "";
             UpdateItemList();
@@ -155,6 +157,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         currentEquipedItem = Instantiate(item.equippableInstance, equippablePivot);
+        equipedItemData = item;
         currentEquipedItem.name = item.itemName;
         currentEquipedItem.transform.SetParent(null);
         
