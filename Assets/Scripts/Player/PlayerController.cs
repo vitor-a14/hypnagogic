@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float floorFriction;
     public LayerMask walkableLayers;
     public float groundDistanceCheck;
+    public float jumpForce;
+    public float gravityMultiplier;
     [HideInInspector] public bool isRunning;
     [HideInInspector] public bool onGround;
 
@@ -35,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 surfaceNormal;
     private CapsuleCollider col;
 
+    private bool landing = true;
+
     private void Awake()
     {
         if(Instance == null)
@@ -52,6 +56,7 @@ public class PlayerController : MonoBehaviour
         //Setup input callbacks
         controls.Player.Movement.performed += ctx => input = ctx.ReadValue<Vector2>();
         controls.Player.Movement.canceled += ctx => input = Vector2.zero;
+        controls.Player.Jump.performed += ctx => Jump();
         controls.Player.Run.performed += ctx => TriggerRun();
         controls.Player.Crouch.performed += ctx => Crouch();
         controls.Player.UsePotion.performed += ctx => PlayerStatus.Instance.ConsumeSoulPotion();
@@ -89,6 +94,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Jump()
+    {
+        if(!DialogueManager.Instance.dialogueIsPlaying && !InventoryManager.Instance.onInventory && onGround) 
+        {
+            if(isCrounching) Crouch();
+            PlayerAudioManager.Instance.JumpSound();
+            rigid.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        }
+    }
+
     private void TriggerRun()
     {
         //If the player is crouching, try to stand up
@@ -114,7 +129,7 @@ public class PlayerController : MonoBehaviour
                 processedDirection.x *= runMultiplier;
                 processedDirection.z *= runMultiplier;
             }
-            else if(isCrounching || CombatHandler.Instance.attacking || CombatHandler.Instance.defending)
+            else if(isCrounching || CombatHandler.Instance.defending)
             {
                 processedDirection.x *= crouchingMultiplier;
                 processedDirection.z *= crouchingMultiplier;
@@ -124,7 +139,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Gravity logic
-        Vector3 gravity = Physics.gravity.y * 5f * Vector3.up;
+        Vector3 gravity = Physics.gravity.y * gravityMultiplier * Vector3.up;
         rigid.AddForce(gravity, ForceMode.Acceleration);
     }
 
@@ -141,6 +156,13 @@ public class PlayerController : MonoBehaviour
         else
         {
             onGround = false;
+            landing = true;
+        }
+
+        if(landing && onGround)
+        {
+            PlayerAudioManager.Instance.LandingSound();
+            landing = false;
         }
     }
 

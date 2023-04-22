@@ -10,6 +10,8 @@ public struct FootstepSet
 
 public class PlayerAudioManager : MonoBehaviour
 {
+    public static PlayerAudioManager Instance { get; private set; }
+    
     [Header("Footsteps")]
     public float footstepVolumeMultiplier = 0.02f;
     public float footstepFrequency;
@@ -17,6 +19,18 @@ public class PlayerAudioManager : MonoBehaviour
 
     float toggleSpeed = 3f;
     AudioSource audioSorce;
+
+    [Header("Jump")]
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip landingSound;
+
+    private void Awake() 
+    {
+        if(Instance == null)
+            Instance = this;
+        else
+            Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");    
+    }
 
     private void Start()
     {
@@ -48,17 +62,37 @@ public class PlayerAudioManager : MonoBehaviour
         }
     }
 
+    public void JumpSound()
+    {
+        AudioManager.Instance.PlayOneShot3D(jumpSound, gameObject, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
+    }
+
+    public void LandingSound()
+    {
+        AudioClip footstepsSound = GetFootStepAudio();
+
+        if(footstepsSound != null)
+            AudioManager.Instance.PlayOneShot3D(footstepsSound, gameObject, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
+    }
+
     public void PlayFootStep()
     {
+        AudioClip footstepsSound = GetFootStepAudio();
+
+        if(footstepsSound != null)
+            AudioManager.Instance.PlayOnAudioSorce(footstepsSound, audioSorce, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
+    }
+
+    private AudioClip GetFootStepAudio()
+    {
         AudioClip[] footstepsSound = null;
+
         foreach(FootstepSet footstep in footsteps)
         {
             if(footstep.tag == PlayerController.Instance.floorType)
                 footstepsSound = footstep.footstepAudios;
         }
 
-        if(footstepsSound == null) return;
-        
-        AudioManager.Instance.PlayOnAudioSorce(footstepsSound[Random.Range(0, footstepsSound.Length - 1)], audioSorce, AudioManager.AudioType.SFX, footstepVolumeMultiplier);
+        return footstepsSound[Random.Range(0, footstepsSound.Length - 1)];
     }
 }

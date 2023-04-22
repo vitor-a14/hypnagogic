@@ -9433,6 +9433,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   groundDistanceCheck: 1.35
+  jumpForce: 15
+  gravityMultiplier: 4
   isRunning: 0
   onGround: 0
   runMultiplier: 1.6
@@ -9546,6 +9548,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 83a681f76761c2142991f7f2b0cb6b5c, type: 3}
     - {fileID: 8300000, guid: 334cc8ec1b8449c43a8990e1c2f4002e, type: 3}
     - {fileID: 8300000, guid: dec88131c3030214c99eabbab0b6e1ff, type: 3}
+  jumpSound: {fileID: 8300000, guid: 9d7889e7998722c4485e2b238fa8f3da, type: 3}
+  landingSound: {fileID: 8300000, guid: e83a8be1cc8edcd4b9776682ed10ef73, type: 3}
 --- !u!82 &1024518876
 AudioSource:
   m_ObjectHideFlags: 0
