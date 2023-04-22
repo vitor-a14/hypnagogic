@@ -8,6 +8,13 @@ public class AttackPattern
     public AudioClip attackAudio;
 }
 
+[System.Serializable]
+public class Drop
+{
+    public Item item;
+    public float dropRate;
+}
+
 public class Entity : MonoBehaviour
 {
     [Header("Attributes")]
@@ -19,11 +26,13 @@ public class Entity : MonoBehaviour
     public float movementSpeed;
     public float attackCooldown;
     public AttackPattern[] attacks;
+    public Drop[] drops;
 
     [Header("Components")]
     [SerializeField] protected Animator anim;
     [SerializeField] protected Rigidbody rigid;
     [SerializeField] protected CollisionRegister hitCollider;
+    [SerializeField] protected GameObject itemDropInstance;
 
     //States
     protected bool goingBackToSpawn = false;
@@ -167,6 +176,8 @@ public class Entity : MonoBehaviour
         active = false;
         life = 0;
 
+        DropItem();
+
         StartCoroutine(FadeAwayCoroutine());
         foreach(Collider col in GetComponentsInChildren<Collider>())
             Destroy(col);
@@ -241,5 +252,33 @@ public class Entity : MonoBehaviour
         lookPos.y = 0;
         var rotation = Quaternion.LookRotation(lookPos);
         transform.rotation = rotation;
+    }
+
+    private void DropItem()
+    {
+        float randomValue = Random.Range(0f, 100f); // Generate a random value within the total drop rate
+
+        foreach (Drop drop in drops)
+        {
+            if (randomValue <= drop.dropRate)
+            {
+                if(drop.item.model == null)
+                {
+                    Debug.LogError("The item that the enemy was trying to drop don't have a model informed!");
+                    return;
+                }
+
+                Vector3 spawnPoint;
+                RaycastHit hit;
+                if(Physics.Raycast(transform.position, -Vector3.up, out hit, 10f))
+                    spawnPoint = hit.point;
+                else 
+                    spawnPoint = transform.position;
+
+                GameObject dropInstance = Instantiate(itemDropInstance, spawnPoint, transform.rotation);
+                dropInstance.GetComponent<InteractableItem>().SetItem(drop.item, true);
+                return; 
+            }
+        }
     }
 }

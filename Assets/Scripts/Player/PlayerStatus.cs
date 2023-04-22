@@ -55,10 +55,8 @@ public class PlayerStatus : MonoBehaviour
     {
         if(soulPotions == 0 || consumableInCooldown || currentLife == maxLife) return;
 
-        soulPotions -= 1;
-        soulPotions = Mathf.Clamp(soulPotions, 0, maxSoulPotionsAllowed);
+        DecreaseSoulPotion(1);
         AudioManager.Instance.PlayOneShot2D(consumeSoulPotionAudio, gameObject, AudioManager.AudioType.SFX, 1);
-        soulPotionsText.text = soulPotions.ToString();
         IncreaseCurrentLife(healthRecoverAmount);
 
         StartCoroutine(StartConsumableCooldown());
@@ -113,5 +111,19 @@ public class PlayerStatus : MonoBehaviour
         currentLife -= amount;
         currentLife = Mathf.Clamp(currentLife, 1, maxLife);
         HUDManager.Instance.healthBarSlider.maxValue = maxLife;
+    }
+
+    public void IncreaseSoulPotion(int amout)
+    {
+        soulPotions += amout;
+        soulPotions = Mathf.Clamp(soulPotions, 0, maxSoulPotionsAllowed);
+        soulPotionsText.text = soulPotions.ToString();
+    }
+
+    public void DecreaseSoulPotion(int amout)
+    {
+        soulPotions -= 1;
+        soulPotions = Mathf.Clamp(soulPotions, 0, maxSoulPotionsAllowed);
+        soulPotionsText.text = soulPotions.ToString();
     }
 }

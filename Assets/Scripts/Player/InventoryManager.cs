@@ -49,7 +49,11 @@ public class InventoryManager : MonoBehaviour
 
     public void Add(Item item) 
     {
-        items.Add(item);
+        if(item.id == 3) //Encapsulated soul / health potion
+            PlayerStatus.Instance.IncreaseSoulPotion(1);
+        else
+            items.Add(item);
+            
         HUDManager.Instance.CollectedItemPopUp(item);
         AudioManager.Instance.PlayOneShot2D(addItemAudio, gameObject, AudioManager.AudioType.SFX, 0.5f);
     }

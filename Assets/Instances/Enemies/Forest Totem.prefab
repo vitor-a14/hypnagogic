@@ -888,10 +888,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 0
-  attackPlayer: 0
-  life: 50
+  attackPlayer: 1
+  life: 1
   damage: 5
-  attackRange: 6
+  attackRange: 5
   movementSpeed: 3
   attackCooldown: 0.5
   attacks:
@@ -899,9 +899,13 @@ MonoBehaviour:
     attackAudio: {fileID: 8300000, guid: cff79d6ddf610a74e81ae6ddd4312da7, type: 3}
   - attackAnimationName: Attack 2
     attackAudio: {fileID: 8300000, guid: 358cdf252ae0f97408d75d6a67aa78f3, type: 3}
+  drops:
+  - item: {fileID: 11400000, guid: a856b399eb79c184e93365fb0c5567e1, type: 2}
+    dropRate: 25
   anim: {fileID: 6660007783727636606}
   rigid: {fileID: 8825966861077801416}
   hitCollider: {fileID: 7408543660760625518}
+  itemDropInstance: {fileID: 1029315995492687967, guid: ba2248f3c344a054da492e2269fe646c, type: 3}
   deathSound: {fileID: 8300000, guid: 07eae5f8e35b7d24eafa9b50e655bf62, type: 3}
   movementSoundSource: {fileID: 5575213281470418258}
   passiveSound: {fileID: 8300000, guid: caa5c3eadade49d4e95bb7193f234bd9, type: 3}

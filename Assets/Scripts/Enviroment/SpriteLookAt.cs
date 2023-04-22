@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class SpriteLookAt : MonoBehaviour
 {
-    [SerializeField] private Transform camTransform;
+    private Transform camTransform;
+
+    private void Start() 
+    {
+        camTransform = Camera.main.transform;
+    }
 
     void LateUpdate()
     {

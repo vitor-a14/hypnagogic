@@ -86,15 +86,19 @@ public class PlayerAudioManager : MonoBehaviour
 
     private AudioClip GetFootStepAudio()
     {
-        if(PlayerController.Instance.floorType == null) return null;
-
+        bool floorTypeFound = false;
         AudioClip[] footstepsSound = null;
 
         foreach(FootstepSet footstep in footsteps)
         {
             if(footstep.tag == PlayerController.Instance.floorType)
+            {
                 footstepsSound = footstep.footstepAudios;
+                floorTypeFound = true;
+            }
         }
+
+        if(!floorTypeFound) return null;
 
         int footStepRandomIndex = Random.Range(0, footstepsSound.Length - 1);
         if(footStepRandomIndex == lastFootstepSound)

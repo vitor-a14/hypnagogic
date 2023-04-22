@@ -9,4 +9,5 @@ public class Item : ScriptableObject
     public string description;
     public bool isEquippable;
     public GameObject equippableInstance;
+    public GameObject model;
 }
