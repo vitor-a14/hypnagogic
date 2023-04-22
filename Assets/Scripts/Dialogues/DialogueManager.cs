@@ -115,10 +115,16 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         dialogueVariables.StopListening(currentStory);
-        dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
+        StartCoroutine(EndDialogueDelay());
         PlayerController.Instance.UseMouse(false);
         dialogueText.text = "";
+    }
+
+    private IEnumerator EndDialogueDelay()
+    {
+        yield return new WaitForEndOfFrame();
+        dialogueIsPlaying = false;
     }
 
     public void MakeChoice(int choiceIndex)
