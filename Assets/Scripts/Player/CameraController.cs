@@ -67,10 +67,8 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate() 
     {
-        if(DialogueManager.Instance.dialogueIsPlaying || InventoryManager.Instance.onInventory)
-        {
+        if(DialogueManager.Instance.dialogueIsPlaying)
             camRotation = transform.rotation.eulerAngles;
-        }
 
         transform.rotation = Quaternion.Euler(camRotation);
     }
