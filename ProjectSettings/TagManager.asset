@@ -12,6 +12,7 @@ TagManager:
   - Item
   - EnviromentAudio
   - Entity
+  - Enemy
   layers:
   - Default
   - TransparentFX

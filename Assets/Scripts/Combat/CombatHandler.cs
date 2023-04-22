@@ -49,12 +49,6 @@ public class CombatHandler : MonoBehaviour
     {
         if(defending)
             timeDefending += Time.deltaTime;
-        else if(attacking && !targetWasHit && currentWeapon.target != null) // hit
-        {
-            AudioManager.Instance.PlayOneShot3D(currentWeapon.hitAudio, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
-            currentWeapon.target.TakeHit(currentWeapon.damage);
-            targetWasHit = true;
-        }
     }
 
     private void Attack()
@@ -160,7 +154,9 @@ public class CombatHandler : MonoBehaviour
     private IEnumerator AttackDuration(float duration)
     {
         attacking = true;
+        currentWeapon.weaponColider.enabled = true; //Activate the weapon collider to hit the enemy
         yield return new WaitForSeconds(duration);
+        currentWeapon.weaponColider.enabled = false;
         targetWasHit = false;
         attacking = false;
     }

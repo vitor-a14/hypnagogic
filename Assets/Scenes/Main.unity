@@ -2880,10 +2880,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 125024020563376168, guid: 16e9e328cc0efd344a1f7b3178a379a6, type: 3}
-      propertyPath: drops.Array.data[0].dropRate
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 4779529522652687076, guid: 16e9e328cc0efd344a1f7b3178a379a6, type: 3}
       propertyPath: m_RootOrder
       value: 1

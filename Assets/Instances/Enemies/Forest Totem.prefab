@@ -378,7 +378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 60dce4160f899864b912bb1aba0d34a1, type: 3}
       propertyPath: m_TagString
-      value: Entity
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 1025454944305007318, guid: 60dce4160f899864b912bb1aba0d34a1, type: 3}
       propertyPath: m_Layer
@@ -530,7 +530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7909848542033764120, guid: 60dce4160f899864b912bb1aba0d34a1, type: 3}
       propertyPath: m_TagString
-      value: Entity
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 8499605502973932042, guid: 60dce4160f899864b912bb1aba0d34a1, type: 3}
       propertyPath: m_Layer
@@ -889,7 +889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   attackPlayer: 1
-  life: 1
+  life: 50
   damage: 5
   attackRange: 5
   movementSpeed: 3
@@ -901,7 +901,7 @@ MonoBehaviour:
     attackAudio: {fileID: 8300000, guid: 358cdf252ae0f97408d75d6a67aa78f3, type: 3}
   drops:
   - item: {fileID: 11400000, guid: a856b399eb79c184e93365fb0c5567e1, type: 2}
-    dropRate: 25
+    dropRate: 100
   anim: {fileID: 6660007783727636606}
   rigid: {fileID: 8825966861077801416}
   hitCollider: {fileID: 7408543660760625518}
