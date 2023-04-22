@@ -9,7 +9,7 @@ public class HUDManager : MonoBehaviour
     
     [Header("Pop Up")]
     [SerializeField] private float popUpDuration;
-    [SerializeField] private Transform popUpWindow;
+    [SerializeField] private Transform canvas;
     [SerializeField] private GameObject itemPopUpInstance;
     [SerializeField] private GameObject textPopUpInstance;
 
@@ -46,7 +46,7 @@ public class HUDManager : MonoBehaviour
 
     public void CollectedItemPopUp(Item item)
     {
-        GameObject popUp = Instantiate(itemPopUpInstance, popUpWindow);
+        GameObject popUp = Instantiate(itemPopUpInstance, canvas);
         popUp.GetComponentInChildren<TMP_Text>().text = item.itemName;
         popUp.transform.GetChild(1).GetComponent<Image>().sprite = item.icon;
 
@@ -69,7 +69,7 @@ public class HUDManager : MonoBehaviour
 
     public void TextPopUp(string text)
     {
-        GameObject popUp = Instantiate(textPopUpInstance, popUpWindow);
+        GameObject popUp = Instantiate(textPopUpInstance, canvas);
         popUp.GetComponentInChildren<TMP_Text>().text = text;
 
         Destroy(popUp, popUpDuration);

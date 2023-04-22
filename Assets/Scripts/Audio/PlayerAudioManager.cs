@@ -86,6 +86,8 @@ public class PlayerAudioManager : MonoBehaviour
 
     private AudioClip GetFootStepAudio()
     {
+        if(PlayerController.Instance.floorType == null) return null;
+
         AudioClip[] footstepsSound = null;
 
         foreach(FootstepSet footstep in footsteps)
