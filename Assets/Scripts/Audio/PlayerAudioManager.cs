@@ -16,6 +16,7 @@ public class PlayerAudioManager : MonoBehaviour
     public float footstepVolumeMultiplier = 0.02f;
     public float footstepFrequency;
     public FootstepSet[] footsteps;
+    private int lastFootstepSound;
 
     float toggleSpeed = 3f;
     AudioSource audioSorce;
@@ -93,6 +94,17 @@ public class PlayerAudioManager : MonoBehaviour
                 footstepsSound = footstep.footstepAudios;
         }
 
-        return footstepsSound[Random.Range(0, footstepsSound.Length - 1)];
+        int footStepRandomIndex = Random.Range(0, footstepsSound.Length - 1);
+        if(footStepRandomIndex == lastFootstepSound)
+        {
+            if(footStepRandomIndex < footstepsSound.Length)
+                footStepRandomIndex += 1;
+            else
+                footStepRandomIndex = 0;
+
+            lastFootstepSound = footStepRandomIndex;
+        }
+
+        return footstepsSound[footStepRandomIndex];
     }
 }
