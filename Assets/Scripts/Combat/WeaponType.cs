@@ -5,9 +5,9 @@ public class WeaponType : MonoBehaviour
     public string weaponType;
     public int damage;
     public float velocity;
-    public Entity target;
     public AudioClip hitAudio;
     public AudioClip drawWeaponAudio;
+    [HideInInspector] public Entity target;
 
     //Send the weapon statistics for the combat handler class, this class is stored in the pivot in the camera
     void Start()
@@ -18,12 +18,13 @@ public class WeaponType : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        if(other.tag == "Entity" && CombatHandler.Instance.attacking)
-        {
-            //Effects.Instance.ScreenShake();
-            AudioManager.Instance.PlayOneShot3D(hitAudio, gameObject, AudioManager.AudioType.SFX, 1);
-            target = other.transform.root.GetComponent<Entity>();
-            target.TakeHit(damage);
-        }
+        if(!CombatHandler.Instance.attacking) return;
+
+        target = other.transform.root.GetComponent<Entity>();
+    }
+
+    private void OnTriggerExit(Collider other) 
+    {
+        target = null;
     }
 }

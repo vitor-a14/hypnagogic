@@ -22,6 +22,7 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] private AudioClip[] takenHit;
 
     private float timeDefending;
+    private bool targetWasHit = false;
 
     //Animation hash's
     private static readonly int defendHash = Animator.StringToHash("Defend");
@@ -44,10 +45,16 @@ public class CombatHandler : MonoBehaviour
         controls.Player.Defend.canceled += ctx => StopDefending();
     }
 
-    private void Update() 
+    private void LateUpdate() 
     {
         if(defending)
             timeDefending += Time.deltaTime;
+        else if(attacking && !targetWasHit && currentWeapon.target != null) // hit
+        {
+            AudioManager.Instance.PlayOneShot3D(currentWeapon.hitAudio, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+            currentWeapon.target.TakeHit(currentWeapon.damage);
+            targetWasHit = true;
+        }
     }
 
     private void Attack()
@@ -111,7 +118,7 @@ public class CombatHandler : MonoBehaviour
             if(timeDefending > 0.1f)
             {
                 AudioManager.Instance.PlayOneShot3D(swordHitDefend[Random.Range(0, swordHitDefend.Length - 1)], currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
-                PlayerStatus.Instance.DecreaseCurrentLife((int)(damage * damageReductionInDefense));
+                //PlayerStatus.Instance.DecreaseCurrentLife((int)(damage * damageReductionInDefense));
                 return false;
             }
             else //Perfect Defense (PARRY)
@@ -154,6 +161,7 @@ public class CombatHandler : MonoBehaviour
     {
         attacking = true;
         yield return new WaitForSeconds(duration);
+        targetWasHit = false;
         attacking = false;
     }
 
