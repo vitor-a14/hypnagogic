@@ -1,8 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
-public class InteractableDoor : Interactable
+public class InteractableDoor : Interactable, IDataPersistance
 {
+    [SerializeField] private string id;
+    [ContextMenu("Generate ID")]
+    private void GenerateGuid()
+    {
+        id = System.Guid.NewGuid().ToString();
+    }
+
     public Item keyItem;
     public float angularVelocity;
     public bool locked;
@@ -15,26 +22,32 @@ public class InteractableDoor : Interactable
     [SerializeField] private AudioClip doorOpenAudio, doorCloseAudio, doorLockedAudio;
     [SerializeField] private AudioSource audioSource;
 
-    private void OnEnable() {
-        StartCoroutine(LoadInfo());
+    private void Start() 
+    {
+        if(id == null || id == "")
+            Debug.LogWarning("Door ID is empty! Generate a ID");
 
         doorCollider = GetComponent<BoxCollider>();
         openDoorRotation = transform.rotation * Quaternion.Euler(0f, -90f, 0f);
         closedDoorRotation = transform.rotation;
     }
 
-    private IEnumerator LoadInfo()
+    public void Save(ref Data gameData)
     {
-        yield return new WaitForEndOfFrame();
-        string[] loadedUnlockedDoors = SaveSystem.Instance.gameData.unlockedDoors;
-        foreach(string unlockedDoorName in loadedUnlockedDoors)
+        if(gameData.unlockedDoors.ContainsKey(id))
+            gameData.unlockedDoors.Remove(id);
+
+        gameData.unlockedDoors.Add(id, true);
+    }
+
+    public void Load(Data gameData)
+    {
+        bool found = false;
+        gameData.collectedItems.TryGetValue(id, out found);
+        if(found) 
         {
-            if(unlockedDoorName == transform.name)
-            {
-                locked = false;
-                ChangeDoorState();
-                break;
-            }
+            locked = false;
+            ChangeDoorState();
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, IDataPersistance
 {
     public static InventoryManager Instance { get; private set; }
     public List<Item> items = new List<Item>();
@@ -46,6 +46,38 @@ public class InventoryManager : MonoBehaviour
             rot.z = 0;
             currentEquipedItem.transform.rotation = equippablePivot.transform.rotation;
         }
+    }
+
+    public void Save(ref Data gameData)
+    {
+        gameData.inventoryItemsID = new int[items.Count];
+        for(int i = 0; i < items.Count; i++)
+            gameData.inventoryItemsID[i] = items[i].id;
+
+        if(equipedItemData == null)
+            gameData.equippedItemID = -1;
+        else
+            gameData.equippedItemID = equipedItemData.id;
+    }
+
+    public void Load(Data gameData)
+    {
+        Item[] allItems = (Item[])Resources.FindObjectsOfTypeAll(typeof(Item));
+        List<Item> loadedItems = new List<Item>();
+
+        foreach(Item item in allItems)
+        {
+            foreach(int itemId in gameData.inventoryItemsID)
+            {
+                if(item.id == itemId)
+                    loadedItems.Add(item);
+            }
+
+            if(item.id == gameData.equippedItemID && gameData.equippedItemID != -1)
+                EquipItem(item);
+        }
+
+        items = loadedItems;
     }
 
     public void Add(Item item) 

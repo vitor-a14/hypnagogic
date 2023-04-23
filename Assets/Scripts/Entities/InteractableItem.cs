@@ -1,25 +1,39 @@
 using System.Collections;
 using UnityEngine;
 
-public class InteractableItem : Interactable
+public class InteractableItem : Interactable, IDataPersistance
 {
+    //Save and ID logic
+    [SerializeField] private string id;
+    [ContextMenu("Generate ID")]
+    private void GenerateGuid()
+    {
+        id = System.Guid.NewGuid().ToString();
+    }
+
+    //Item script logic
     public Item item;
     private float duration = 120;
 
-    private void OnEnable() 
+    private void Start() 
     {
-        StartCoroutine(LoadInfo());
+        if(id == null || id == "")
+            Debug.LogWarning("Item ID is empty! Generate a ID");
     }
 
-    private IEnumerator LoadInfo()
+    public void Save(ref Data gameData)
     {
-        yield return new WaitForEndOfFrame();
-        string[] loadedPickedItems = SaveSystem.Instance.gameData.pickedItems;
-        foreach(string pickedItemName in loadedPickedItems)
-        {
-            if(pickedItemName == transform.name)
-                Destroy(gameObject);
-        }
+        if(gameData.collectedItems.ContainsKey(id))
+            gameData.collectedItems.Remove(id);
+
+        gameData.collectedItems.Add(id, true); 
+    }
+
+    public void Load(Data gameData)
+    {
+        gameData.collectedItems.TryGetValue(id, out bool collected);
+        if(collected) 
+            Destroy(gameObject);
     }
 
     public override void Interact()
@@ -27,7 +41,6 @@ public class InteractableItem : Interactable
         base.Interact();
         
         InventoryManager.Instance.Add(item);
-        SaveSystem.Instance.gameData.AddPickedItemToInfo(transform);
         Destroy(gameObject);
     }
 

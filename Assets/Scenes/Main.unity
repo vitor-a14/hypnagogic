@@ -1778,6 +1778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace6426e19c10a640bd73917cbcefd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 
   item: {fileID: 11400000, guid: 13ef914acc18d5c4a8b6e403a54f89d7, type: 2}
 --- !u!23 &176278456
 MeshRenderer:
@@ -7571,6 +7572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace6426e19c10a640bd73917cbcefd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 
   item: {fileID: 11400000, guid: 3f9a65013d651f94c811f49f9f1667b0, type: 2}
 --- !u!135 &852185038
 SphereCollider:
@@ -9703,6 +9705,7 @@ MonoBehaviour:
   inventoryComponent: {fileID: 1102656654}
   onInventory: 0
   equippablePivot: {fileID: 2143288209}
+  equipedItemData: {fileID: 0}
   addItemAudio: {fileID: 8300000, guid: 6b320f4138a2cbb499854b1632fb517d, type: 3}
   removeItemAudio: {fileID: 8300000, guid: d619c36df84509c40b158bf8d65d0978, type: 3}
   openInventoryAudio: {fileID: 8300000, guid: 61efe914b4e3c8c489684b26b9ace7ba, type: 3}
@@ -13617,15 +13620,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cbbefef949d064db11fe5ff74112e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fileName: saveData
   gameData:
     maxLife: 0
     currentLife: 0
     soulPotions: 0
     goldenSeeds: 0
-    position: []
+    playerPosition: []
     inventoryItemsID: 
-    openDoors: []
-    pickedItems: []
+    currentArea: 
+    equippedItemID: 0
+    unlockedDoors:
+      keys: []
+      values: 
+    collectedItems:
+      keys: []
+      values: 
 --- !u!1001 &1469441516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15454,6 +15464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6edfbb6ef051e647881caa52f22e315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 
   keyItem: {fileID: 11400000, guid: 13ef914acc18d5c4a8b6e403a54f89d7, type: 2}
   angularVelocity: 5
   locked: 1
@@ -25770,10 +25781,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6020963758770922830, guid: afa40231ea042944e9e82444ce6438d8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8235530515241770912, guid: afa40231ea042944e9e82444ce6438d8, type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 1952741166}
+    - target: {fileID: 8235530515241770912, guid: afa40231ea042944e9e82444ce6438d8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8235530515241770912, guid: afa40231ea042944e9e82444ce6438d8, type: 3}
       propertyPath: standingPosY
       value: -1
@@ -26703,6 +26722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace6426e19c10a640bd73917cbcefd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 2d9f76df-cd18-43b3-a76c-263e06177bb3
   item: {fileID: 11400000, guid: c26847c7be4a19e4e89cc6d1e5ab8052, type: 2}
 --- !u!1 &8852746981382174609
 GameObject:

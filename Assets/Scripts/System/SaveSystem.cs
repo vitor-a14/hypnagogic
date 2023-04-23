@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
+using System.Linq;
 
 //This class stores all the relevant variables to save and load into the game
 [System.Serializable]
@@ -11,59 +10,18 @@ public class Data
     public float currentLife;
     public int soulPotions;
     public int goldenSeeds;
-    public float[] position;
+    public float[] playerPosition;
     public int[] inventoryItemsID;
-    public string[] unlockedDoors = new string[0];
-    public string[] pickedItems = new string[0];
     public string currentArea;
     public int equippedItemID;
 
-    public void StorePlayerInfo()
+    public SerializableDictionary<string, bool> unlockedDoors;
+    public SerializableDictionary<string, bool> collectedItems;
+
+    public Data()
     {
-        Transform playerTransform = PlayerController.Instance.transform;
-
-        position = new float[3];
-        position[0] = playerTransform.position.x;
-        position[1] = playerTransform.position.y;
-        position[2] = playerTransform.position.z;
-
-        maxLife = PlayerStatus.Instance.maxLife;
-        currentLife = PlayerStatus.Instance.currentLife;
-        soulPotions = PlayerStatus.Instance.soulPotions;
-        goldenSeeds = PlayerStatus.Instance.goldenSeeds;
-        currentArea = AreaManager.Instance.currentArea;
-    }
-
-    public void StoreInventoryInfo()
-    {
-        inventoryItemsID = new int[InventoryManager.Instance.items.Count];
-        for(int i = 0; i < InventoryManager.Instance.items.Count; i++)
-            inventoryItemsID[i] = InventoryManager.Instance.items[i].id;
-
-        if(InventoryManager.Instance.equipedItemData == null)
-            equippedItemID = -1;
-        else
-            equippedItemID = InventoryManager.Instance.equipedItemData.id;
-    }
-
-    public void AddUnlockedDoorToInfo(Transform door)
-    {
-        string[] newUnlockedDoorsList = new string[unlockedDoors.Length + 1];
-        for(int i = 0; i < unlockedDoors.Length; i++)
-            newUnlockedDoorsList[i] = unlockedDoors[i];
-
-        newUnlockedDoorsList[unlockedDoors.Length] = door.name;
-        unlockedDoors = newUnlockedDoorsList;
-    }
-
-    public void AddPickedItemToInfo(Transform itemPickup)
-    {
-        string[] newPickedItemList = new string[pickedItems.Length + 1];
-        for(int i = 0; i < pickedItems.Length; i++)
-            newPickedItemList[i] = pickedItems[i];
-
-        newPickedItemList[pickedItems.Length] = itemPickup.name;
-        pickedItems = newPickedItemList;
+        unlockedDoors = new SerializableDictionary<string, bool>();
+        collectedItems = new SerializableDictionary<string, bool>();
     }
 }
 
@@ -71,77 +29,62 @@ public class Data
 public class SaveSystem : MonoBehaviour
 {
     public static SaveSystem Instance { get; private set; }
-    public Data gameData;
 
-    private void Start() 
+    private List<IDataPersistance> dataPersistanceObjects;
+    private FileDataHandler dataHandler;
+    [SerializeField] private string fileName;
+    public Data gameData; //where the actual game info is stored
+
+    private void Awake() 
     {
         if(Instance == null)
             Instance = this;
         else
             Debug.Log("Instance is already set, something is wrong");
+    }
 
-        //LoadGame();
+    private void Start() 
+    {
+        this.gameData = new Data();
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+        this.dataPersistanceObjects = FindAllDataPersistanceObjects();
+        LoadGame();
     }
 
     public void SaveGame()
     {
-        gameData.StorePlayerInfo();
-        gameData.StoreInventoryInfo();
+        foreach(IDataPersistance dataPersistanceObject in dataPersistanceObjects)
+        {
+            dataPersistanceObject.Save(ref gameData);
+        }
 
-        string path = Application.persistentDataPath + "/data.save";
-
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        formatter.Serialize(stream, gameData);
-        stream.Close();
+        //Save file
+        dataHandler.Save(gameData);
         Debug.Log("Game saved!");
     }
 
     public void LoadGame()
     {
         //Load file
-        string path = Application.persistentDataPath + "/data.save";
+        gameData = dataHandler.Load();
 
-        if(!File.Exists(path))
+        if(gameData == null)
         {
-            Debug.LogError("Save file not found");
+            Debug.Log("No save files foud, initializing the game without saves");
             return;
         }
 
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Open);
-
-        gameData = formatter.Deserialize(stream) as Data;
-        stream.Close();
-
-        //Load variables into the game
-
-        //Player status and position
-        PlayerController.Instance.transform.position = new Vector3(gameData.position[0], gameData.position[1], gameData.position[2]);
-        PlayerStatus.Instance.maxLife = gameData.maxLife;
-        PlayerStatus.Instance.currentLife = gameData.currentLife;
-        PlayerStatus.Instance.soulPotions = gameData.soulPotions;
-        PlayerStatus.Instance.goldenSeeds = gameData.goldenSeeds;
-        AreaManager.Instance.currentArea = gameData.currentArea;
-
-        //Inventory data
-        Item[] allItems = (Item[])Resources.FindObjectsOfTypeAll(typeof(Item));
-        List<Item> inventory = new List<Item>();
-
-        foreach(Item item in allItems)
+        foreach(IDataPersistance dataPersistanceObject in dataPersistanceObjects)
         {
-            foreach(int itemId in gameData.inventoryItemsID)
-            {
-                if(item.id == itemId)
-                    inventory.Add(item);
-            }
-
-            if(item.id == gameData.equippedItemID)
-                InventoryManager.Instance.EquipItem(item);
+            dataPersistanceObject.Load(gameData);
         }
 
-        InventoryManager.Instance.items = inventory;
         Debug.Log("Game loaded!");
     }
+
+    private List<IDataPersistance> FindAllDataPersistanceObjects()
+    {
+        IEnumerable<IDataPersistance> dataPersistanceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();
+        return new List<IDataPersistance>(dataPersistanceObjects);
+    } 
 }

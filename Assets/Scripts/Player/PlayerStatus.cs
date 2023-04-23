@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class PlayerStatus : MonoBehaviour
+public class PlayerStatus : MonoBehaviour, IDataPersistance
 {
     public static PlayerStatus Instance { get; private set; }
 
@@ -49,6 +49,33 @@ public class PlayerStatus : MonoBehaviour
     void LateUpdate()
     {
         StaminaManagement();
+    }
+
+    public void Save(ref Data gameData)
+    {
+        gameData.playerPosition = new float[3];
+        gameData.playerPosition[0] = transform.position.x;
+        gameData.playerPosition[1] = transform.position.y;
+        gameData.playerPosition[2] = transform.position.z;
+
+        gameData.maxLife = maxLife;
+        gameData.currentLife = currentLife;
+        gameData.soulPotions = soulPotions;
+        gameData.goldenSeeds = goldenSeeds;
+    }
+
+    public void Load(Data gameData)
+    {
+        Vector3 playerPos = new Vector3(gameData.playerPosition[0], gameData.playerPosition[1], gameData.playerPosition[2]);
+        transform.position = playerPos;
+
+        maxLife = gameData.maxLife;
+        currentLife = gameData.currentLife;
+        
+        soulPotions = 0;
+        goldenSeeds = 0;
+        IncreaseSoulPotion(gameData.soulPotions);
+        //INCREASE GOLDEN SEEDS
     }
 
     public void ConsumeSoulPotion()
