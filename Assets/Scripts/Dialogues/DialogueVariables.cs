@@ -5,13 +5,30 @@ using Ink.Runtime;
 public class DialogueVariables 
 {
     public Dictionary<string, Ink.Runtime.Object> variables { get; private set; }
-    
+    public Story globalVariablesStory;
+
     public DialogueVariables(TextAsset loadGlobalsJson)
     {
         //Create the story
-        Story globalVariablesStory = new Story(loadGlobalsJson.text);
+        globalVariablesStory = new Story(loadGlobalsJson.text);
+    }
 
-        //Initialize the dictionary
+    public string GetVariables()
+    {
+        if(globalVariablesStory == null) return "";
+
+        VariableToStory(globalVariablesStory);
+        return globalVariablesStory.state.ToJson();
+    }
+
+    public void LoadVariables(string variablesJson)
+    {
+        globalVariablesStory.state.LoadJson(variablesJson);
+    }
+
+    //Load variables into the ink system
+    public void InitializeDictionary()
+    {
         variables = new Dictionary<string, Ink.Runtime.Object>();
         foreach(string name in globalVariablesStory.variablesState)
         {

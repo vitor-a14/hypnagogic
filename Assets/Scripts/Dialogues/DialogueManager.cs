@@ -5,7 +5,7 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.UI;
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager : MonoBehaviour, IDataPersistance
 {
     public static DialogueManager Instance { get; private set; }
 
@@ -55,6 +55,20 @@ public class DialogueManager : MonoBehaviour
             choicesButton[index] = choice.GetComponent<Button>();
             index++;
         }
+    }
+
+    public void Save(ref Data gameData)
+    {
+        gameData.dialogueVariables = dialogueVariables.GetVariables().ToString();
+    }
+
+    public void Load(Data gameData)
+    {
+        if(gameData.dialogueVariables != "" && gameData.dialogueVariables != null)
+            dialogueVariables.LoadVariables(gameData.dialogueVariables);
+
+        //load variables into the ink system
+        dialogueVariables.InitializeDictionary();
     }
 
     public void StartDialogue(TextAsset inkJson)

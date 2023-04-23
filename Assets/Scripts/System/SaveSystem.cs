@@ -14,6 +14,7 @@ public class Data
     public int[] inventoryItemsID;
     public string currentArea;
     public int equippedItemID;
+    public string dialogueVariables;
 
     public SerializableDictionary<string, bool> unlockedDoors;
     public SerializableDictionary<string, bool> collectedItems;
