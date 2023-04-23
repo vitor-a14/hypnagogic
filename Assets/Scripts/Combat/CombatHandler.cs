@@ -16,7 +16,7 @@ public class CombatHandler : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private AudioClip[] swordWoosh;
-    [SerializeField] private AudioClip defend;
+    [SerializeField] private AudioClip defensivePostureAudio;
     [SerializeField] private AudioClip parry;
     [SerializeField] private AudioClip[] swordHitDefend;
     [SerializeField] private AudioClip[] takenHit;
@@ -92,7 +92,7 @@ public class CombatHandler : MonoBehaviour
         if(anim.GetCurrentAnimatorClipInfo(0).GetHashCode() != defenseReactHash)
             anim.CrossFade(defendHash, 0, 0); //Play defending animation
 
-        AudioManager.Instance.PlayOneShot3D(defend, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+        AudioManager.Instance.PlayOneShot2D(defensivePostureAudio, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
 
         //Handle the variables
         defending = true;
@@ -111,7 +111,7 @@ public class CombatHandler : MonoBehaviour
             //Normal defense
             if(timeDefending > 0.1f)
             {
-                AudioManager.Instance.PlayOneShot3D(swordHitDefend[Random.Range(0, swordHitDefend.Length - 1)], currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+                AudioManager.Instance.PlayOneShot2D(swordHitDefend[Random.Range(0, swordHitDefend.Length - 1)], currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
                 //PlayerStatus.Instance.DecreaseCurrentLife((int)(damage * damageReductionInDefense));
                 return false;
             }
@@ -119,7 +119,7 @@ public class CombatHandler : MonoBehaviour
             {
                 Effects.Instance.FreezeFrame();
                 Effects.Instance.ScreenShake();
-                AudioManager.Instance.PlayOneShot3D(parry, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
+                AudioManager.Instance.PlayOneShot2D(parry, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
                 return true;
             }
         }

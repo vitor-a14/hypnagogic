@@ -61,7 +61,6 @@ public class SaveSystem : MonoBehaviour
 
         //Save file
         dataHandler.Save(gameData);
-        Debug.Log("Game saved!");
     }
 
     public void LoadGame()
@@ -79,8 +78,6 @@ public class SaveSystem : MonoBehaviour
         {
             dataPersistanceObject.Load(gameData);
         }
-
-        Debug.Log("Game loaded!");
     }
 
     private List<IDataPersistance> FindAllDataPersistanceObjects()

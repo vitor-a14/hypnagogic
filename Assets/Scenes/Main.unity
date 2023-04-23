@@ -7256,7 +7256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &789786523
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10461,7 +10461,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1119527136
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13630,6 +13630,7 @@ MonoBehaviour:
     inventoryItemsID: 
     currentArea: 
     equippedItemID: 0
+    dialogueVariables: 
     unlockedDoors:
       keys: []
       values: 
@@ -25548,12 +25549,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a99ad7b81b29989458661415039e478d, type: 3}
   - {fileID: 8300000, guid: a3dae2e5e1e8d7a4da24a1787eb2b194, type: 3}
   - {fileID: 8300000, guid: 519d368baa09aa8469659b48b33083ca, type: 3}
-  defend: {fileID: 8300000, guid: d6289a6940e83874694cca569e8781c9, type: 3}
+  defensivePostureAudio: {fileID: 8300000, guid: d6289a6940e83874694cca569e8781c9, type: 3}
   parry: {fileID: 8300000, guid: 81aeb566ac294334285c4e109fb28006, type: 3}
   swordHitDefend:
-  - {fileID: 8300000, guid: d0df265f6bd597d4db1d24b61229f878, type: 3}
-  - {fileID: 8300000, guid: d94029995b035194a995594ea4b49f49, type: 3}
-  - {fileID: 8300000, guid: ef4238b8b9e8c1246bac5500102c71c8, type: 3}
+  - {fileID: 8300000, guid: 8c9b755582c192443bd9d434d5012a5a, type: 3}
+  - {fileID: 8300000, guid: a80327870ea77784591000cfb87a3079, type: 3}
+  - {fileID: 8300000, guid: d71b373d3993ae8429ab3a4af6798537, type: 3}
   takenHit:
   - {fileID: 8300000, guid: f606cb2336516bf4bbb0cd22364ccccb, type: 3}
   - {fileID: 8300000, guid: e8b9a659967c1784b913943b97c7491e, type: 3}
