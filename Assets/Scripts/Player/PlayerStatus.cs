@@ -67,11 +67,11 @@ public class PlayerStatus : MonoBehaviour, IDataPersistance
     public void Load(Data gameData)
     {
         Vector3 playerPos = new Vector3(gameData.playerPosition[0], gameData.playerPosition[1], gameData.playerPosition[2]);
-        transform.position = playerPos;
+        PlayerController.Instance.rigid.position = playerPos;
 
         maxLife = gameData.maxLife;
         currentLife = gameData.currentLife;
-        
+
         soulPotions = 0;
         goldenSeeds = 0;
         IncreaseSoulPotion(gameData.soulPotions);
