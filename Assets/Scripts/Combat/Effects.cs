@@ -5,7 +5,6 @@ using UnityEngine;
 public class Effects : MonoBehaviour
 {
     public static Effects Instance;
-    public float duration;
     private bool waiting;
     [SerializeField] private Transform cam;
 
@@ -16,9 +15,11 @@ public class Effects : MonoBehaviour
             Instance = this;
         else
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
+
+        Time.timeScale = 1;
     }
 
-    private IEnumerator Freeze()
+    private IEnumerator Freeze(float duration)
     {
         waiting = true;
         yield return new WaitForSecondsRealtime(duration);
@@ -26,7 +27,7 @@ public class Effects : MonoBehaviour
         waiting = false;
     }
 
-    private IEnumerator Shake()
+    private IEnumerator Shake(float duration)
     {
         Vector3 startPos = cam.position;
         float elapsedTime = 0.0f;
@@ -41,16 +42,16 @@ public class Effects : MonoBehaviour
         cam.localPosition = Vector3.zero;
     }
 
-    public void FreezeFrame()
+    public void FreezeFrame(float duration)
     {
         if(waiting) return;
 
         Time.timeScale = 0.1f;
-        StartCoroutine(Freeze());
+        StartCoroutine(Freeze(duration));
     }
 
-    public void ScreenShake()
+    public void ScreenShake(float duration)
     {
-        StartCoroutine(Shake());
+        StartCoroutine(Shake(duration));
     }
 }

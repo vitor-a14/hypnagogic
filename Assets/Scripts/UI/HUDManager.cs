@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class HUDManager : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private Image playerHUDcurrentWeaponIcon;
     [SerializeField] private TMP_Text playerHUDcurrentWeaponName;
 
+    [Header("Death Screen")]
+    [SerializeField] private GameObject deathScreenBackground;
+    [SerializeField] private GameObject deathScreenTitle;
+    [SerializeField] private GameObject deathScreenButtons;
+
     void Awake()
     {
         if(Instance == null)
@@ -36,6 +42,7 @@ public class HUDManager : MonoBehaviour
         healthBarSlider.maxValue = PlayerStatus.Instance.maxLife; //This updates in the PlayerStatus class
 
         FadeIn(playerHUD.gameObject, 5);
+        FadeOut(deathScreenBackground, 2f);
     }
 
     //Player UI Logic
@@ -44,6 +51,19 @@ public class HUDManager : MonoBehaviour
         healthBarSlider.value = PlayerStatus.Instance.currentLife;
     }
 
+    public void DeathScreen()
+    {
+        FadeIn(deathScreenBackground, 1f);
+        FadeIn(deathScreenTitle, 0.7f);
+        FadeIn(deathScreenButtons, 0.3f);
+        PlayerController.Instance.UseMouse(true);
+    }
+
+    public void RessurrectButton()
+    {
+         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
     public void CollectedItemPopUp(Item item)
     {
         GameObject popUp = Instantiate(itemPopUpInstance, canvas);

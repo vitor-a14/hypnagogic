@@ -33,6 +33,8 @@ public class AudioManager : MonoBehaviour
             Instance = this;
         else
             Debug.LogError(this.name + " is trying to set a Instance, but seems like a instance is already attributed.");
+
+        AudioListener.volume = 1;
     }
 
     //Create a 3D audio instance in a gameobject

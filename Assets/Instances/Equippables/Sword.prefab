@@ -51,9 +51,8 @@ MonoBehaviour:
   velocity: 3
   hitAudio: {fileID: 8300000, guid: 37f4090494884fb41ab9330982f0caeb, type: 3}
   drawWeaponAudio: {fileID: 8300000, guid: 092e61e4d6a5aeb4d9335a6442c45ea4, type: 3}
-  target: {fileID: 0}
-  weaponCollider: {fileID: 0}
-  weaponColliderOriginalSize: {x: 0, y: 0, z: 0}
+  weaponColider: {fileID: 0}
+  hitEffect: {fileID: 3986576470657797300, guid: 50777fc81f1f4d04b83bcd9999cb2edc, type: 3}
 --- !u!65 &2026255251481523864
 BoxCollider:
   m_ObjectHideFlags: 0

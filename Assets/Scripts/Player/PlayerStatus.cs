@@ -117,6 +117,8 @@ public class PlayerStatus : MonoBehaviour, IDataPersistance
         currentLife -= amount;
         currentLife = Mathf.Clamp(currentLife, 0, maxLife);
         HUDManager.Instance.FadeInAndOut(damagedUIEffect, 0.3f, 15f);
+        if(currentLife <=0)
+            Die();
     }
 
     public void IncreaseCurrentLife(int amount)
@@ -152,5 +154,24 @@ public class PlayerStatus : MonoBehaviour, IDataPersistance
         soulPotions -= 1;
         soulPotions = Mathf.Clamp(soulPotions, 0, maxSoulPotionsAllowed);
         soulPotionsText.text = soulPotions.ToString();
+    }
+
+    public void Die()
+    {
+        HUDManager.Instance.DeathScreen();
+        CameraAnimation.Instance.ChangeAnimation(CameraAnimation.death);
+        PlayerController.Instance.controls.Disable();
+        CombatHandler.Instance.controls.Disable();
+        StartCoroutine(FadeAudio());
+        Effects.Instance.FreezeFrame(0.2f);
+    }
+
+    IEnumerator FadeAudio()
+    {
+        while(AudioListener.volume > 0)
+        {
+            AudioListener.volume -= Time.deltaTime;
+            yield return null;
+        }
     }
 }

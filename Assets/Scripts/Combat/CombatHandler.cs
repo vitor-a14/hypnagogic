@@ -8,7 +8,7 @@ public class CombatHandler : MonoBehaviour
 
     [SerializeField] private Animator anim;
     private int currentAttack = 1;
-    private Inputs controls;
+    public Inputs controls;
     [HideInInspector] public bool attacking = false;
     [HideInInspector] public bool defending = false;
     private WeaponType currentWeapon;
@@ -117,8 +117,8 @@ public class CombatHandler : MonoBehaviour
             }
             else //Perfect Defense (PARRY)
             {
-                Effects.Instance.FreezeFrame();
-                Effects.Instance.ScreenShake();
+                Effects.Instance.FreezeFrame(0.2f);
+                Effects.Instance.ScreenShake(0.2f);
                 AudioManager.Instance.PlayOneShot2D(parry, currentWeapon.gameObject, AudioManager.AudioType.SFX, 1);
                 return true;
             }
